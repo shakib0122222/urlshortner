@@ -15,16 +15,17 @@
 
   <div class="container">
     <div class="form-box">
-      <input type="url" id="contentUrl" placeholder="Enter Content Link (e.g. Google Drive, Mega)" required />
-      <input type="url" id="adsUrl" placeholder="Enter Ads Link (Your monetized link)" required />
-      <input type="file" id="imageUpload" accept="image/*" />
+      <input type="url" id="contentUrl" placeholder="Enter Content Link (Google Drive, Mega etc)" required />
+      <input type="url" id="adsUrl" placeholder="Enter Ads / Monetized Link" required />
+      <input type="file" id="imageUpload" accept="image/*" required />
       <button id="shortenBtn">Generate Short Link</button>
     </div>
 
     <div id="result" class="result hidden">
       <p>Your Short Link:</p>
       <input type="text" id="shortLink" readonly />
-      <button onclick="copyLink()">Copy Link</button>
+      <button onclick="copyLink()">Copy</button>
+      <p style="margin-top:10px; color:green;">Link copied to clipboard!</p>
     </div>
 
     <div class="stats">
@@ -33,7 +34,7 @@
   </div>
 
   <footer>
-    <p>© 2025 Pixguard • Made with 🔥</p>
+    <p>© 2025 Pixguard • Made with</p>
   </footer>
 
   <script src="script.js"></script>
