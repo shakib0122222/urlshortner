@@ -3,90 +3,66 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Pixguard – Premium URL Shortener</title>
+  <title>Pixguard - Short Link</title>
   <link rel="stylesheet" href="style.css"/>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
 </head>
 <body>
 
-  <!-- Dynamic Header -->
-  <header class="hero-header">
-    <div class="header-content">
-      <h1 class="title-gradient">Pixguard</h1>
-      <p class="subtitle">Shorten Your Long URL Easily & Earn Money</p>
-      <div class="stats-badge">
-        <i class="fas fa-users"></i>
-        <span id="visitorCount">0</span>+ Happy Users
+<header>
+  <h1>Pixguard</h1>
+  <p>Shorten URL & Earn Money Fast</p>
+</header>
+
+<div class="container">
+  <div class="card">
+    <div class="input-box">
+      <i class="fas fa-link"></i>
+      <input type="url" id="contentUrl" placeholder="Content Link (Drive, MediaFire, etc)" required />
+    </div>
+
+    <div class="input-box">
+      <i class="fas fa-hand-holding-dollar"></i>
+      <input type="url" id="adsUrl" placeholder="Your Ads Link (Adsterra, etc)" required />
+    </div>
+
+    <div class="input-box">
+      <i class="fas fa-image"></i>
+      <label class="file-label">
+        <input type="file" id="imageUpload" accept="image/*" hidden />
+        Choose Preview Image
+      </label>
+      <div class="file-name">No file selected</div>
+    </div>
+
+    <button id="shortenBtn" class="generate-btn">Generate Link</button>
+
+    <div id="result" class="result-box hidden" style="display:none;">
+      <p>Your Link Ready!</p>
+      <div style="display:flex;">
+        <input type="text" id="shortLink" readonly />
+        <button onclick="copyLink()">Copy</button>
       </div>
     </div>
-    <div class="wave"></div>
-  </header>
+  </div>
 
-  <!-- Floating Form Card -->
-  <section class="form-section">
-    <div class="form-card">
-      <h2>Create Short Link in Seconds</h2>
+  <div style="text-align:center; margin:40px 0; font-size:2rem; color:#5e72e4; font-weight:800;">
+    Visitors: <span id="visitorCount">0</span>
+  </div>
+</div>
 
-      <div class="input-group">
-        <i class="fas fa-link"></i>
-        <input type="url" id="contentUrl" placeholder="Paste your content link (Drive, Mega, etc)" required />
-      </div>
+<footer>
+  © 2025 Pixguard • Made in Bangladesh<br>
+</footer>
 
-      <div class="input-group">
-        <i class="fas fa-dollar-sign"></i>
-        <input type="url" id="adsUrl" placeholder="Your ads / earning link" required />
-      </div>
-
-      <div class="input-group file-group">
-        <i class="fas fa-image"></i>
-        <input type="file" id="imageUpload" accept="image/*" required />
-        <span class="file-name">No image chosen</span>
-      </div>
-
-      <button id="shortenBtn" class="generate-btn">
-        <span>Generate Premium Link</span>
-        <i class="fas fa-arrow-right"></i>
-      </button>
-
-      <!-- Result Box -->
-      <div id="result" class="result-box hidden">
-        <p>Your Premium Short Link is Ready!</p>
-        <div class="link-container">
-          <input type="text" id="shortLink" readonly />
-          <button onclick="copyLink()" class="copy-btn">
-            <i class="fas fa-copy"></i> Copy
-          </button>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Dynamic Footer -->
-  <footer class="premium-footer">
-    <div class="footer-content">
-      <div class="footer-brand">
-        <h3>Pixguard</h3>
-        <p>Fast • Secure • High Earning</p>
-      </div>
-      <div class="footer-links">
-        <a href="#">About</a>
-        <a href="#">Contact</a>
-        <a href="#">Privacy</a>
-      </div>
-      <div class="footer-copyright">
-        © 2025 Pixguard • Made with <i class="fas fa-heart heart-beat"></i> Bangladesh
-      </div>
-    </div>
-  </footer>
-
-  <script src="script.js"></script>
-  <script>
-    // ফাইল নাম দেখানো
-    document.getElementById("imageUpload").addEventListener("change", function() {
-      const fileName = this.files[0]?.name || "No image chosen";
-      document.querySelector(".file-name").textContent = fileName;
-    });
-  </script>
+<script src="script.js"></script>
+<script>
+// ফাইল নাম দেখানো
+document.getElementById("imageUpload").onchange = function() {
+  const name = this.files[0]?.name || "No file selected";
+  document.querySelector(".file-name").textContent = name;
+};
+</script>
 </body>
 </html>
