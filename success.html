@@ -1,19 +1,18 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="bn">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Get Link | Pixguard</title>
-  <link rel="stylesheet" href="style.css"/>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Get Link - Pixguard</title>
+  <link rel="stylesheet" href="style.css">
 </head>
-<body class="success-page">
-  <div class="countdown-box">
-    <h2>Your Link Almost Ready...</h2>
-    <div class="timer" id="timer">5</div>
-    <button id="getLinkBtn" disabled>Get Link</button>
-    <p id="clickCount">You clicked Get Link 0 times</p>
+<body style="background:linear-gradient(135deg,#6366f1,#8b5cf6);min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px">
+  <div class="card" style="text-align:center;padding:50px 30px">
+    <h2 style="color:#333;margin-bottom:30px">Your Link Almost Ready...</h2>
+    <div id="timer" style="font-size:6rem;font-weight:900;color:#6366f1;margin:30px 0">5</div>
+    <button id="getLinkBtn" class="btn" disabled>Get Link</button>
+    <p id="clickCount" style="margin-top:20px;color:#555"></p>
   </div>
-
-  <script src="script.js"></script>
+<script src="script.js"></script>
 </body>
 </html>
