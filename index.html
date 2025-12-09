@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Pixguard URL Shortener</title>
+  <link rel="stylesheet" href="style.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header>
+    <h1>Pixguard URL Shortener</h1>
+    <p>Shorten Your long Url easily here</p>
+  </header>
+
+  <div class="container">
+    <div class="form-box">
+      <input type="url" id="contentUrl" placeholder="Enter Content Link (e.g. Google Drive, Mega)" required />
+      <input type="url" id="adsUrl" placeholder="Enter Ads Link (Your monetized link)" required />
+      <input type="file" id="imageUpload" accept="image/*" />
+      <button id="shortenBtn">Generate Short Link</button>
+    </div>
+
+    <div id="result" class="result hidden">
+      <p>Your Short Link:</p>
+      <input type="text" id="shortLink" readonly />
+      <button onclick="copyLink()">Copy Link</button>
+    </div>
+
+    <div class="stats">
+      <p>Total Visitors: <span id="visitorCount">0</span></p>
+    </div>
+  </div>
+
+  <footer>
+    <p>© 2025 Pixguard • Made with 🔥</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
