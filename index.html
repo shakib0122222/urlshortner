@@ -1,42 +1,92 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="bn">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Pixguard URL Shortener</title>
+  <title>Pixguard – Premium URL Shortener</title>
   <link rel="stylesheet" href="style.css"/>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
 </head>
 <body>
-  <header>
-    <h1>Pixguard URL Shortener</h1>
-    <p>Shorten Your long Url easily here</p>
+
+  <!-- Dynamic Header -->
+  <header class="hero-header">
+    <div class="header-content">
+      <h1 class="title-gradient">Pixguard</h1>
+      <p class="subtitle">Shorten Your Long URL Easily & Earn Money</p>
+      <div class="stats-badge">
+        <i class="fas fa-users"></i>
+        <span id="visitorCount">0</span>+ Happy Users
+      </div>
+    </div>
+    <div class="wave"></div>
   </header>
 
-  <div class="container">
-    <div class="form-box">
-      <input type="url" id="contentUrl" placeholder="Enter Content Link (Google Drive, Mega etc)" required />
-      <input type="url" id="adsUrl" placeholder="Enter Ads / Monetized Link" required />
-      <input type="file" id="imageUpload" accept="image/*" required />
-      <button id="shortenBtn">Generate Short Link</button>
-    </div>
+  <!-- Floating Form Card -->
+  <section class="form-section">
+    <div class="form-card">
+      <h2>Create Short Link in Seconds</h2>
 
-    <div id="result" class="result hidden">
-      <p>Your Short Link:</p>
-      <input type="text" id="shortLink" readonly />
-      <button onclick="copyLink()">Copy</button>
-      <p style="margin-top:10px; color:green;">Link copied to clipboard!</p>
-    </div>
+      <div class="input-group">
+        <i class="fas fa-link"></i>
+        <input type="url" id="contentUrl" placeholder="Paste your content link (Drive, Mega, etc)" required />
+      </div>
 
-    <div class="stats">
-      <p>Total Visitors: <span id="visitorCount">0</span></p>
-    </div>
-  </div>
+      <div class="input-group">
+        <i class="fas fa-dollar-sign"></i>
+        <input type="url" id="adsUrl" placeholder="Your ads / earning link" required />
+      </div>
 
-  <footer>
-    <p>© 2025 Pixguard • Made with</p>
+      <div class="input-group file-group">
+        <i class="fas fa-image"></i>
+        <input type="file" id="imageUpload" accept="image/*" required />
+        <span class="file-name">No image chosen</span>
+      </div>
+
+      <button id="shortenBtn" class="generate-btn">
+        <span>Generate Premium Link</span>
+        <i class="fas fa-arrow-right"></i>
+      </button>
+
+      <!-- Result Box -->
+      <div id="result" class="result-box hidden">
+        <p>Your Premium Short Link is Ready!</p>
+        <div class="link-container">
+          <input type="text" id="shortLink" readonly />
+          <button onclick="copyLink()" class="copy-btn">
+            <i class="fas fa-copy"></i> Copy
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Dynamic Footer -->
+  <footer class="premium-footer">
+    <div class="footer-content">
+      <div class="footer-brand">
+        <h3>Pixguard</h3>
+        <p>Fast • Secure • High Earning</p>
+      </div>
+      <div class="footer-links">
+        <a href="#">About</a>
+        <a href="#">Contact</a>
+        <a href="#">Privacy</a>
+      </div>
+      <div class="footer-copyright">
+        © 2025 Pixguard • Made with <i class="fas fa-heart heart-beat"></i> Bangladesh
+      </div>
+    </div>
   </footer>
 
   <script src="script.js"></script>
+  <script>
+    // ফাইল নাম দেখানো
+    document.getElementById("imageUpload").addEventListener("change", function() {
+      const fileName = this.files[0]?.name || "No image chosen";
+      document.querySelector(".file-name").textContent = fileName;
+    });
+  </script>
 </body>
 </html>
