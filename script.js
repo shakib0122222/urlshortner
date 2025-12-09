@@ -1,30 +1,39 @@
-// localStorage থেকে ডাটা লোড
+// pixguard – Full Updated script.js (2025 Version)
+
 let links = JSON.parse(localStorage.getItem("pixguard_links") || "{}");
 let totalVisitors = parseInt(localStorage.getItem("totalVisitors") || "0");
 
-// টোটাল ভিজিটর দেখানো (সব পেজে)
+// সব পেজে টোটাল ভিজিটর দেখানো
 document.addEventListener("DOMContentLoaded", () => {
   const counter = document.getElementById("visitorCount");
   if (counter) counter.textContent = totalVisitors;
 });
 
-// ============= INDEX PAGE =============
+// ============= INDEX PAGE – লিংক জেনারেট =============
 if (document.getElementById("shortenBtn")) {
   document.getElementById("shortenBtn").addEventListener("click", () => {
     const contentUrl = document.getElementById("contentUrl").value.trim();
     const adsUrl = document.getElementById("adsUrl").value.trim();
     const fileInput = document.getElementById("imageUpload");
 
-    if (!contentUrl || !adsUrl || !fileInput.files[0]) {
-      alert("সবগুলো ফিল্ড পূরণ করুন!");
+    if (!contentUrl || !adsUrl || fileInput.files.length === 0) {
+      alert("সব ফিল্ড পূরণ করুন!");
       return;
     }
 
     const reader = new FileReader();
     reader.onload = function(e) {
       const imageData = e.target.result;
-      const id = Math.random().toString(36).substr(2, 9);
 
+      // ৬ অক্ষরের সুপার শর্ট ID (বড় হাতের)
+      const id = Math.random().toString(36).substr(2, 6).toUpperCase();
+
+      // লিংক হবে → https://yoursite.com/v/AB12XY
+      const baseUrl = window.location.origin + window.location.pathname;
+      const cleanBase = baseUrl.replace(/index\.html.*$/i, '');
+      const shortLink = `${cleanBase}v/${id}`;
+
+      // ডাটা সেভ
       links[id] = {
         contentUrl: contentUrl,
         adsUrl: adsUrl,
@@ -32,15 +41,13 @@ if (document.getElementById("shortenBtn")) {
         created: new Date().toISOString()
       };
 
-      // সেভ করি
       localStorage.setItem("pixguard_links", JSON.stringify(links));
 
-      // শর্ট লিংক তৈরি
-      const shortLink = `${window.location.origin}${window.location.pathname.replace("index.html","")}view.html?id=${id}`;
-      
+      // রেজাল্ট দেখানো
       document.getElementById("shortLink").value = shortLink;
       document.getElementById("result").classList.remove("hidden");
     };
+
     reader.readAsDataURL(fileInput.files[0]);
   });
 }
@@ -54,32 +61,33 @@ function copyLink() {
   alert("লিংক কপি হয়েছে!");
 }
 
-// ============= VIEW PAGE =============
+// ============= VIEW PAGE (v.html) =============
 const params = new URLSearchParams(window.location.search);
 const id = params.get("id");
 
-if (id && links[id] && window.location.pathname.includes("view.html")) {
+if (id && links[id] && (window.location.pathname.includes("v/") || window.location.pathname.includes("v.html"))) {
   const data = links[id];
 
-  // ভিজিটর কাউন্ট
+  // ভিজিটর কাউন্ট বাড়াও
   totalVisitors++;
   localStorage.setItem("totalVisitors", totalVisitors);
+  document.getElementById("visitorCount") && (document.getElementById("visitorCount").textContent = totalVisitors);
 
-  // ছবি দেখানো
+  // ছবি দেখাও
   document.getElementById("previewImage").src = data.imageData;
 
-  // সব জাল বাটন এডস-এ নিয়ে যাবে
+  // সব বাটন এডস-এ নিয়ে যাক
   window.goToAds = () => {
     window.open(data.adsUrl, "_blank");
   };
 
-  // কন্টিনিউ বাটন → সাকসেস পেজ
+  // Continue → Success পেজ
   document.getElementById("continueBtn").onclick = () => {
     window.location.href = `success.html?id=${id}`;
   };
 }
 
-// ============= SUCCESS PAGE =============
+// ============= SUCCESS PAGE (5 সেকেন্ড কাউন্টডাউন) =============
 if (window.location.pathname.includes("success.html") && id && links[id]) {
   const data = links[id];
   let clicks = 0;
