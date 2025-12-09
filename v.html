@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Pixguard - Unlock Content</title>
+  <link rel="stylesheet" href="style.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
+</head>
+<body class="view-page">
+  <div class="view-container">
+    <div class="preview-card">
+      <img id="previewImage" src="" alt="Content Preview"/>
+    </div>
+
+    <div class="button-grid">
+      <button class="big-btn btn-watch" onclick="goToAds()">Watch Now</button>
+      <button class="big-btn btn-download" onclick="goToAds()">Download HD</button>
+      <button class="big-btn btn-watch" onclick="goToAds()">Stream Online</button>
+      <button class="big-btn btn-download" onclick="goToAds()">Direct Download</button>
+    </div>
+
+    <!-- Adsterra Banner -->
+    <div class="ad-banner" style="text-align:center; margin:30px 0; padding:20px; background:rgba(0,0,0,0.3); border-radius:16px;">
+      <p style="font-size:1.3rem; margin-bottom:15px;">Advertisement</p>
+      <!-- তোর Adsterra কোড এখানে পেস্ট কর -->
+    </div>
+
+    <div class="note">
+      <h3>কিভাবে ডাউনলোড করবেন?</h3>
+      <ol style="text-align:left; line-height:2;">
+        <li>“Watch Now” বা “Download” বাটনে ক্লিক করুন</li>
+        <li>এড দেখে ব্যাক করুন</li>
+        <li>৫-৮ সেকেন্ড ওয়েট করুন</li>
+        <li>নিচে “Click Here to Continue” চাপুন</li>
+      </ol>
+    </div>
+
+    <button class="final-btn" id="continueBtn">Click Here to Continue</button>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
