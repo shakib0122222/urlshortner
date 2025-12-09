@@ -3,14 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Pixguard</title>
+  <title>Pixguard - URL Shortener</title>
   <link rel="stylesheet" href="style.css">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 <body>
 
-<header>
 <header>
   <h1>Pixguard</h1>
   <p>Shorten URL & Earn Money Easily</p>
@@ -20,31 +19,29 @@
   <div class="card">
     <div class="input-box">
       <i class="fas fa-link"></i>
-      <input type="url" id="contentUrl" placeholder="Content Link (Drive, Mega etc)" required>
+      <input type="url" id="contentUrl" placeholder="Content Link (Drive/Mega)" required>
     </div>
 
     <div class="input-box">
       <i class="fas fa-dollar-sign"></i>
-      <input type="url" id="adsUrl" placeholder="Your Ads Link" required>
+      <input type="url" id="adsUrl" placeholder="Ads Link" required>
     </div>
 
     <div class="input-box">
       <i class="fas fa-image"></i>
       <div class="file-area" onclick="document.getElementById('imageUpload').click()">
         <input type="file" id="imageUpload" accept="image/*" hidden>
-        Choose Preview Image
+        Click to Choose Preview Image
       </div>
-      <div class="file-name">No file selected</div>
+      <div class="file-name">No file chosen</div>
     </div>
 
-    <button id="shortenBtn" class="generate-btn">Generate Link</button>
+    <button id="shortenBtn" class="btn">Generate Short Link</button>
 
-    <div id="result" class="result-box hidden">
-      <p>Your Short Link Ready!</p>
-      <div class="link-flex">
-        <input type="text" id="shortLink" readonly>
-        <button onclick="copyLink()">Copy</button>
-      </div>
+    <div id="result" class="result" style="display:none">
+      <p>Short Link Ready!</p>
+      <input type="text" id="shortLink" readonly>
+      <button onclick="copyLink()">Copy Link</button>
     </div>
   </div>
 
@@ -53,9 +50,7 @@
   </div>
 </div>
 
-<footer>
-  © 2025 Pixguard • Made in Bangladesh
-</footer>
+<footer>© 2025 Pixguard • Made in Bangladesh</footer>
 
 <script src="script.js"></script>
 </body>
