@@ -1,36 +1,28 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="bn">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Pixguard - Unlock</title>
-  <link rel="stylesheet" href="style.css"/>
+  <link rel="stylesheet" href="style.css">
 </head>
-<body class="view-page">
-  <div class="view-container">
-    <div class="preview-card">
-      <img id="previewImage" src="" alt="Preview"/>
+<body style="background:#f0f2f8;padding:20px 0">
+<div class="container">
+  <div class="card" style="padding:20px">
+    <img id="previewImage" style="width:100%;border-radius:16px;max-height:400px;object-fit:cover">
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:15px;margin:25px 0">
+      <button class="btn" onclick="goToAds()">Watch Now</button>
+      <button class="btn" onclick="goToAds()">Download</button>
+      <button class="btn" onclick="goToAds()">Stream HD</button>
+      <button class="btn" onclick="goToAds()">Direct Link</button>
     </div>
 
-    <div class="button-grid">
-      <button class="big-btn btn-watch" onclick="goToAds()">Watch Now</button>
-      <button class="big-btn btn-download" onclick="goToAds()">Download</button>
-      <button class="big-btn btn-watch" onclick="goToAds()">Stream HD</button>
-      <button class="big-btn btn-download" onclick="goToAds()">Direct Link</button>
-    </div>
-
-    <div class="note">
-      <h3>কিভাবে ডাউনলোড করবেন?</h3>
-      <ol>
-        <li>যেকোনো বাটনে ক্লিক করুন</li>
-        <li>এড দেখে Back করুন</li>
-        <li>নিচে “Click Here to Continue” চাপুন</li>
-      </ol>
-    </div>
-
-    <button class="final-btn" id="continueBtn">Click Here to Continue</button>
+    <button class="btn" id="continueBtn" style="background:#10b981;margin-top:10px">
+      Click Here to Continue
+    </button>
   </div>
-
-  <script src="script.js"></script>
+</div>
+<script src="script.js"></script>
 </body>
 </html>
