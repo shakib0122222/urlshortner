@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Pixguard</title>
+  <title>Pixguard - Premium URL Shortener</title>
   <link rel="stylesheet" href="style.css">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
@@ -12,43 +12,51 @@
 
 <header>
   <h1>Pixguard</h1>
-  <p>Shorten URL & Earn Money Fast</p>
+  <p>Shorten URL & Earn Money Instantly</p>
 </header>
 
 <div class="container">
   <div class="card">
+
     <div class="input-group">
       <i class="fas fa-link"></i>
-      <input type="url" id="contentUrl" placeholder="Content Link" required>
+      <input type="url" id="contentUrl" placeholder="Content Link (Drive/Mega)" required>
     </div>
 
     <div class="input-group">
       <i class="fas fa-dollar-sign"></i>
-      <input type="url" id="adsUrl" placeholder="Ads Link" required>
+      <input type="url" id="adsUrl" placeholder="Your Ads Link" required>
     </div>
 
+    <!-- মোবাইলে ১০০% কাজ করে এইটা -->
     <div class="input-group">
       <i class="fas fa-image"></i>
-      <div class="file-upload">
-        <input type="file" id="imageUpload" accept="image/*" required>
-        <strong>Click to Upload Preview Image</strong>
-        <p id="fileInfo">No file selected</p>
-      </div>
+      <label for="imageUpload" class="file-upload-label">
+        <div class="file-upload-box">
+          <i class="fas fa-cloud-upload-alt"></i>
+          <strong>Tap Here to Select Image</strong>
+          <span id="fileInfo">No image selected</span>
+        </div>
+      </label>
+      <input type="file" id="imageUpload" accept="image/*" required>
     </div>
 
-    <button id="generateBtn" class="btn">Generate Link</button>
+    <button id="generateBtn" class="btn">Generate Premium Link</button>
 
     <div id="result" class="result">
-      <p>Link Ready!</p>
+      <p>Your Short Link is Ready!</p>
       <input type="text" id="shortLink" readonly>
-      <button onclick="copyLink()">Copy</button>
+      <button onclick="copyLink()">Copy Link</button>
     </div>
+
   </div>
 
-  <div class="stats">Visitors: <span id="visitorCount">0</span></div>
+  <div class="stats">
+    Total Visitors: <span id="visitorCount">0</span>
+  </div>
 </div>
 
-<footer>© 2025 Pixguard</footer>
+<footer>© 2025 Pixguard • Made with Love in Bangladesh</footer>
 
 <script src="script.js"></script>
 </body>
