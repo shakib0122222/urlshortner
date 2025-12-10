@@ -61,3 +61,20 @@ input { width:100%; padding:14px; margin:10px 0; border:2px solid #ddd; border-r
   border: 2px solid #ef5350;
   display: none;
          }
+.loading {
+  text-align: center;
+  padding: 100px 20px;
+  font-size: 1.5rem;
+  color: #666;
+}
+
+.error {
+  background: #ffebee;
+  color: #c62828;
+  padding: 16px;
+  border-radius: 12px;
+  margin: 20px 0;
+  text-align: center;
+  font-weight: 600;
+  border: 2px solid #ef5350;
+}
