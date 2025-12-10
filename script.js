@@ -1,76 +1,70 @@
 let links = JSON.parse(localStorage.getItem("pixguard_links") || "{}");
 let totalVisitors = parseInt(localStorage.getItem("totalVisitors") || "0");
 
-// ভিজিটর কাউন্ট
-const vCount = document.getElementById("visitorCount");
-if(vCount) vCount.textContent = totalVisitors;
+// ভিজিটর দেখানো
+document.getElementById("visitorCount")?.textContent = totalVisitors;
 
-// ফাইল নাম দেখানো
-const fileInput = document.getElementById("imageUpload");
-if(fileInput) && (fileInput.onchange = () => {
-  const name = fileInput.files[0] ? fileInput.files[0].name : "No file chosen";
-  document.querySelector(".file-name").textContent = name;
+// ছবির নাম দেখানো
+document.getElementById("imageUpload")?.addEventListener("change", function(){
+  const name = this.files[0] ? this.files[0].name : "No file selected";
+  document.getElementById("fileName").textContent = name;
 });
 
-// ===== INDEX PAGE – লিংক জেনারেট =====
-const shortenBtn = document.getElementById("shortenBtn");
-if(shortenBtn){
-  shortenBtn.onclick = () => {
-    const cUrl = document.getElementById("contentUrl").value.trim();
-    const aUrl = document.getElementById("adsUrl").value.trim();
-    const file = fileInput.files[0];
+// ====== GENERATE LINK ======
+document.getElementById("generateBtn")?.addEventListener("click", function(){
+  const contentUrl = document.getElementById("contentUrl").value.trim();
+  const adsUrl = document.getElementById("adsUrl").value.trim();
+  const file = document.getElementById("imageUpload").files[0];
 
-    if(!cUrl || !aUrl || !file){
-      alert("সব ফিল্ড পূরণ করুন!"); return;
-    }
+  if(!contentUrl || !adsUrl || !file){
+    alert("সবকিছু পূরণ করুন!");
+    return;
+  }
 
-    const reader = new FileReader();
-    reader.onload = e => {
-      const img = e.target.result;
-      const id = Math.random().toString(36).substr(2,6).toUpperCase();
+  const reader = new FileReader();
+  reader.onload = function(e){
+    const img = e.target.result;
+    const id = Math.random().toString(36).substr(2,6).toUpperCase();
 
-      // পুরো ডোমেইনসহ লিংক
-      const fullUrl = window.location.origin + window.location.pathname;
-      const basePath = fullUrl.substring(0, fullUrl.lastIndexOf("/") + 1);
-      const shortLink = basePath + "v.html?id=" + id;
+    // পুরো ডোমেইনসহ লিংক
+    const shortLink = window.location.origin + window.location.pathname.substring(0, window.location.pathname.lastIndexOf("/") + 1) + "v.html?id=" + id;
 
-      links[id] = {contentUrl: cUrl, adsUrl: aUrl, imageData: img};
-      localStorage.setItem("pixguard_links", JSON.stringify(links));
+    links[id] = {contentUrl, adsUrl, imageData: img};
+    localStorage.setItem("pixguard_links", JSON.stringify(links));
 
-      document.getElementById("shortLink").value = shortLink;
-      document.getElementById("result").style.display = "block";
-    };
-    reader.readAsDataURL(file);
+    document.getElementById("shortLink").value = shortLink;
+    document.getElementById("result").style.display = "block";
   };
-}
+  reader.readAsDataURL(file);
+});
 
 function copyLink(){
-  const inp = document.getElementById("shortLink");
-  inp.select();
-  navigator.clipboard.writeText(inp.value);
+  const input = document.getElementById("shortLink");
+  input.select();
+  navigator.clipboard.writeText(input.value);
   alert("কপি হয়েছে!");
 }
 
-// ===== VIEW PAGE (v.html) =====
-const params = new URLSearchParams(location.search);
-const id = params.get("id");
+// ====== VIEW PAGE (v.html) ======
+const urlParams = new URLSearchParams(window.location.search);
+const id = urlParams.get("id");
 
 if(id && links[id]){
   totalVisitors++;
   localStorage.setItem("totalVisitors", totalVisitors);
-  if(vCount) vCount.textContent = totalVisitors;
+  document.getElementById("visitorCount")?.textContent = totalVisitors;
 
   document.getElementById("previewImage").src = links[id].imageData;
 
   window.goToAds = () => window.open(links[id].adsUrl, "_blank");
 
   document.getElementById("continueBtn").onclick = () => {
-    location.href = "success.html?id=" + id;
+    window.location = "success.html?id=" + id;
   };
 }
 
-// ===== SUCCESS PAGE =====
-if(location.pathname.includes("success.html") && id && links[id]){
+// ====== SUCCESS PAGE ======
+if(window.location.pathname.includes("success.html") && id && links[id]){
   let clicks = 0;
   let time = 5;
   const timer = document.getElementById("timer");
@@ -93,10 +87,10 @@ if(location.pathname.includes("success.html") && id && links[id]){
     if(clicks === 0){
       window.open(links[id].adsUrl, "_blank");
       clicks++;
-      msg.textContent = "এড দেখে ব্যাক করুন → আবার চাপুন";
+      msg.textContent = "এড দেখে Back করুন → আবার ক্লিক করুন";
       btn.textContent = "Click Again → Final Link";
     } else {
-      location.href = links[id].contentUrl;
+      window.location.href = links[id].contentUrl;
     }
   };
 }
