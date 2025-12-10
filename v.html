@@ -7,50 +7,49 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="container">
-    <div id="content"></div>
-  </div>
-
-  <footer class="footer">© Pixguard - Dev SAKIB HOSSAIN</footer>
+  <div class="container" id="main"></div>
 
   <script>
-    const hash = location.hash.substring(1);
-    if (!hash) {
-      document.body.innerHTML = "<h2 style='text-align:center;color:red;padding:100px;'>Invalid Link!</h2>";
+    const code = location.pathname.substring(1);
+    if (!code || code === "v.html") {
+      document.body.innerHTML = "<h2 style='text-align:center;padding:100px;color:#666;'>Create a link from home page</h2>";
+      throw new Error("No code");
     }
 
     try {
-      const json = decodeURIComponent(escape(atob(hash)));
+      // Base64 ডিকোড
+      const padded = code + "===".slice(0, (4 - code.length % 4) % 4);
+      const json = decodeURIComponent(escape(atob(padded)));
       const data = JSON.parse(json);
 
-      document.getElementById('content').innerHTML = `
-        ${data.imageData ? `<img src="${data.imageData}" class="preview-img">` : ''}
+      document.getElementById('main').innerHTML = `
+        ${data.i ? `<img src="${data.i}" class="preview-img">` : ''}
         <div class="option-box"><h3>Option 1</h3>
           <div class="btn-pair">
-            <button class="btn-left" onclick="openAd()">Watch Now</button>
-            <button class="btn-right" onclick="openAd()">Download</button>
+            <button class="btn-left" onclick="ad()">Watch Now</button>
+            <button class="btn-right" onclick="ad()">Download</button>
           </div>
         </div>
         <div class="option-box"><h3>Option 2</h3>
           <div class="btn-pair">
-            <button class="btn-left alt" onclick="openAd()">Continue</button>
-            <button class="btn-right alt" onclick="openAd()">Get Link</button>
+            <button class="btn-left alt" onclick="ad()">Continue</button>
+            <button class="btn-right alt" onclick="ad()">Get Link</button>
           </div>
         </div>
         <div class="ad-space">Your Adsterra Banner Here</div>
-        <div class="note">যেকোনো বাটনে চাপ দিয়ে এড দেখে ব্যাক করুন → Continue চাপুন</div>
-        <button onclick="continueToLink()" class="btn-continue">Continue to Get Link</button>
+        <div class="note">এড দেখে ব্যাক করুন → Continue চাপুন</div>
+        <button onclick="next()" class="btn-continue">Continue to Get Link</button>
       `;
 
       let clicked = false;
-      window.openAd = () => window.open(data.adUrl, "_blank");
-      window.continueToLink = () => {
-        if (!clicked) { openAd(); clicked = true; }
-        else { location.href = "redirect.html#" + hash; }
+      window.ad = () => window.open(data.a, "_blank");
+      window.next = () => {
+        if (!clicked) { ad(); clicked = true; }
+        else { location.href = "r.html#" + code; }
       };
 
     } catch (e) {
-      document.body.innerHTML = "<h2 style='text-align:center;color:red;padding:100px;'>Link Error!</h2>";
+      document.body.innerHTML = "<h2 style='text-align:center;color:red;padding:100px;'>Invalid or Expired Link!</h2>";
     }
   </script>
 </body>
