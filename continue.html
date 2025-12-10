@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Get Link | Pixguard</title>
+  <link rel="stylesheet" href="assets/style.css"/>
+</head>
+<body>
+  <div class="countdown-container">
+    <h2>Your Link almost ready...</h2>
+    <div class="timer" id="timer">5</div>
+    <button id="getLinkBtn" disabled>Get Link</button>
+  </div>
+
+  <script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const id = urlParams.get('id') || new URLSearchParams(window.location.hash.substring(1)).get('id');
+
+    let count = 5;
+    const timerEl = document.getElementById('timer');
+    const btn = document.getElementById('getLinkBtn');
+
+    const interval = setInterval(() => {
+      count--;
+      timerEl.textContent = count;
+      if (count <= 0) {
+        clearInterval(interval);
+        btn.disabled = false;
+        btn.textContent = "Get Link";
+      }
+    }, 1000);
+
+    btn.onclick = () => {
+      const adUrl = localStorage.getItem('adUrl_' + id);
+      const finalUrl = localStorage.getItem('finalUrl_' + id);
+
+      if (!window.adClicked) {
+        window.adClicked = true;
+        window.location.href = adUrl;
+      } else {
+        window.location.href = finalUrl;
+      }
+    };
+  </script>
+</body>
+</html>
