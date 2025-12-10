@@ -1,19 +1,19 @@
 <!DOCTYPE html>
 <html lang="bn">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Video Link</title>
-  <link rel="stylesheet" href="style.css" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pixguard - Get Link</title>
+  <link rel="stylesheet" href="style.css">
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
 </head>
 <body>
-  <div class="container" id="app">
+  <div class="container">
     <div class="loading">লোড হচ্ছে...</div>
   </div>
 
-  <footer class="footer">© Pixguard - Dev SAKIB HOSSAIN</footer>
+  <footer class="footer">© Pixguard ♥ Dev- SAKIB HOSSAIN</footer>
 
   <script>
     const firebaseConfig = {
@@ -29,58 +29,55 @@
     firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
 
-    const code = location.pathname.slice(1);
+    const code = location.pathname.substring(1);
     if (!code) {
-      document.body.innerHTML = "<h1 style='text-align:center;color:red;padding:100px;'>Invalid Link!</h1>";
+      document.body.innerHTML = "<h2 style='text-align:center;color:red;padding:100px;'>Invalid Link!</h2>";
     }
 
     db.collection("links").doc(code).get().then(async doc => {
       if (!doc.exists) {
-        document.body.innerHTML = "<h1 style='text-align:center;color:red;padding:100px;'>Link Not Found!</h1>";
+        document.body.innerHTML = "<h2 style='text-align:center;color:red;padding:100px;'>Link Not Found!</h2>";
         return;
       }
 
       const data = doc.data();
       await db.collection("links").doc(code).update({ clicks: firebase.firestore.FieldValue.increment(1) });
 
-      document.getElementById('app').innerHTML = `
-        ${data.imageData ? `<img src="${data.imageData}" class="preview-img" />` : ''}
-        <div class="option-box">
-          <h3>Option 1</h3>
-          <div class="btn-pair">
-            <button class="btn-left" onclick="openAd()">Watch Now</button>
-            <button class="btn-right" onclick="openAd()">Download</button>
+      document.body.innerHTML = `
+        <div class="container">
+          ${data.imageData ? `<img src="${data.imageData}" class="preview-img">` : ''}
+          <div class="option-box"><h3>Option 1</h3>
+            <div class="btn-pair">
+              <button class="btn-left" onclick="openAd()">Watch Now</button>
+              <button class="btn-right" onclick="openAd()">Download</button>
+            </div>
           </div>
-        </div>
-        <div class="option-box">
-          <h3>Option 2</h3>
-          <div class="btn-pair">
-            <button class="btn-left alt" onclick="openAd()">Continue</button>
-            <button class="btn-right alt" onclick="openAd()">Get Link</button>
+          <div class="option-box"><h3>Option 2</h3>
+            <div class="btn-pair">
+              <button class="btn-left alt" onclick="openAd()">Continue</button>
+              <button class="btn-right alt" onclick="openAd()">Get Link</button>
+            </div>
           </div>
+          <div class="ad-space"></div>
+          <div class="note">যেকোনো বাটনে চাপ দিয়ে এড দেখে ব্যাক করুন → তারপর Continue চাপুন</div>
+          <button onclick="goNext()" class="btn-continue">Continue to Get Link</button>
         </div>
-        <div class="ad-space"></div>
-        <div class="note">যেকোনো বাটনে চাপ দিয়ে এড দেখে ব্যাক করুন → তারপর Continue চাপুন</div>
-        <button id="continueBtn" class="btn-continue">Continue to Get Link</button>
+        <footer class="footer">© Pixguard ♥ Dev- SAKIB HOSSAIN</footer>
       `;
 
       window.adUrl = data.adUrl;
-      window.contentUrl = data.contentUrl;
+      window.linkData = data;
 
       let clicked = false;
-      document.getElementById('continueBtn').onclick = () => {
-        if (!clicked) {
-          openAd();
-          clicked = true;
-        } else {
-          location.href = "redirect.html#" + btoa(JSON.stringify(data));
-        }
+      window.goNext = () => {
+        if (!clicked) { openAd(); clicked = true; }
+        else { location.href = "redirect.html#" + btoa(JSON.stringify(window.linkData)); }
       };
+    }).catch(err => {
+      document.body.innerHTML = "<h2 style='text-align:center;color:red;padding:100px;'>Error: " + err.message + "</h2>";
     });
 
-    function openAd() {
-      if (window.adUrl) window.open(window.adUrl, "_blank");
-    }
+    function openAd() { if (window.adUrl) window.open(window.adUrl, "_blank"); }
   </script>
 </body>
 </html>
