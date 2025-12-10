@@ -49,3 +49,15 @@ input { width:100%; padding:14px; margin:10px 0; border:2px solid #ddd; border-r
   .btn-pair { flex-direction:column; }
   .btn-left, .btn-right { width:90%; margin:8px 0; }
 }
+/* Error Message Style */
+.error {
+  background: #ffebee;
+  color: #c62828;
+  padding: 16px;
+  border-radius: 12px;
+  margin: 20px 0;
+  text-align: center;
+  font-weight: 600;
+  border: 2px solid #ef5350;
+  display: none;
+         }
