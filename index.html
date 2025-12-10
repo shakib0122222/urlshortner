@@ -3,88 +3,72 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Pixguard - URL Shortener</title>
+  <title>Pixguard - Premium Shortener</title>
   <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;700;900&display=swap" rel="stylesheet">
 </head>
 <body>
-  <div class="container">
-    <header class="header">
+  <div class="wrapper">
+    <header class="hero-header">
       <h1>Pixguard</h1>
-      <p>Shorten Links • Earn More</p>
+      <p class="tagline">Short Links • Maximum Earnings</p>
     </header>
 
-    <div class="card">
-      <h2>শর্ট লিংক তৈরি করুন</h2>
-      <input type="url" id="contentUrl" placeholder="কনটেন্ট লিংক" required>
-      <input type="url" id="adUrl" placeholder="এডস লিংক" required>
-      <input type="file" id="imageUpload" accept="image/*">
-      <button onclick="createLink()" class="btn-create">Create Short Link</button>
-    </div>
+    <main class="main-card glass">
+      <h2>Create Short Link</h2>
+      <div class="input-group">
+        <input type="url" id="contentUrl" placeholder="Content / Download Link" required>
+        <input type="url" id="adUrl" placeholder="Ad Link (Required)" required>
+        <input type="file" id="imageUpload" accept="image/*">
+      </div>
+      <button onclick="createLink()" class="btn-primary glow">Generate Link</button>
+    </main>
 
-    <div id="result" class="card result hidden">
-      <p>তোমার ছোট লিংক তৈরি হয়েছে!</p>
-      <input type="text" id="shortLink" readonly>
-      <button onclick="copyLink()" class="btn-copy">কপি করুন</button>
+    <div id="result" class="result-card glass hidden">
+      <h3>Your Short Link is Ready!</h3>
+      <div class="link-display">
+        <input type="text" id="shortLink" readonly>
+        <button onclick="copyLink()" class="btn-copy neon">Copy</button>
+      </div>
     </div>
   </div>
 
-  <footer class="footer">© Pixguard - Dev SAKIB HOSSAIN</footer>
-
-  <!DOCTYPE html>
-<html lang="bn">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Pixguard - Get Link</title>
-  <link rel="stylesheet" href="style.css">
-</head>
-<body>
-  <div class="container" id="main"></div>
+  <footer class="footer">© Pixguard • Dev- SAKIB HOSSAIN</footer>
 
   <script>
-    const code = location.pathname.substring(1);
-    if (!code || code === "v.html") {
-      document.body.innerHTML = "<h2 style='text-align:center;padding:100px;color:#666;'>Create a link from home page</h2>";
-      throw new Error("No code");
+    function createLink() {
+      const c = document.getElementById('contentUrl').value.trim();
+      const a = document.getElementById('adUrl').value.trim();
+      const f = document.getElementById('imageUpload').files[0];
+
+      if (!c || !a) return alert("Both links required!");
+
+      let i = "";
+      if (f) {
+        const r = new FileReader();
+        r.onload = () => { i = r.result; gen(); };
+        r.readAsDataURL(f);
+      } else gen();
+
+      function gen() {
+        const chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+        let code = "";
+        for (let x = 0; x < 7; x++) code += chars.charAt(Math.floor(Math.random() * chars.length));
+
+        const data = btoa(JSON.stringify({c, a, i}));
+        localStorage.setItem("link_" + code, data);
+
+        const short = location.origin + "/" + code;
+        document.getElementById('shortLink').value = short;
+        document.getElementById('result').classList.remove('hidden');
+      }
     }
 
-    try {
-      // Base64 ডিকোড
-      const padded = code + "===".slice(0, (4 - code.length % 4) % 4);
-      const json = decodeURIComponent(escape(atob(padded)));
-      const data = JSON.parse(json);
-
-      document.getElementById('main').innerHTML = `
-        ${data.i ? `<img src="${data.i}" class="preview-img">` : ''}
-        <div class="option-box"><h3>Option 1</h3>
-          <div class="btn-pair">
-            <button class="btn-left" onclick="ad()">Watch Now</button>
-            <button class="btn-right" onclick="ad()">Download</button>
-          </div>
-        </div>
-        <div class="option-box"><h3>Option 2</h3>
-          <div class="btn-pair">
-            <button class="btn-left alt" onclick="ad()">Continue</button>
-            <button class="btn-right alt" onclick="ad()">Get Link</button>
-          </div>
-        </div>
-        <div class="ad-space">Your Adsterra Banner Here</div>
-        <div class="note">এড দেখে ব্যাক করুন → Continue চাপুন</div>
-        <button onclick="next()" class="btn-continue">Continue to Get Link</button>
-      `;
-
-      let clicked = false;
-      window.ad = () => window.open(data.a, "_blank");
-      window.next = () => {
-        if (!clicked) { ad(); clicked = true; }
-        else { location.href = "r.html#" + code; }
-      };
-
-    } catch (e) {
-      document.body.innerHTML = "<h2 style='text-align:center;color:red;padding:100px;'>Invalid or Expired Link!</h2>";
+    function copyLink() {
+      const el = document.getElementById('shortLink');
+      el.select(); document.execCommand('copy');
+      alert('Copied!');
     }
   </script>
-</body>
-</html>
 </body>
 </html>
