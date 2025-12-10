@@ -30,43 +30,61 @@
 
   <footer class="footer">© Pixguard - Dev SAKIB HOSSAIN</footer>
 
+  <!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pixguard - Get Link</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container" id="main"></div>
+
   <script>
-    function createLink() {
-      const contentUrl = document.getElementById('contentUrl').value.trim();
-      const adUrl = document.getElementById('adUrl').value.trim();
-      const file = document.getElementById('imageUpload').files[0];
-
-      if (!contentUrl || !adUrl) return alert("দুটি লিংক দিতে হবে!");
-
-      let imageData = "";
-      if (file) {
-        const reader = new FileReader();
-        reader.onload = () => {
-          imageData = reader.result;
-          generateShortLink(contentUrl, adUrl, imageData);
-        };
-        reader.readAsDataURL(file);
-      } else {
-        generateShortLink(contentUrl, adUrl, "");
-      }
+    const code = location.pathname.substring(1);
+    if (!code || code === "v.html") {
+      document.body.innerHTML = "<h2 style='text-align:center;padding:100px;color:#666;'>Create a link from home page</h2>";
+      throw new Error("No code");
     }
 
-    function generateShortLink(contentUrl, adUrl, imageData) {
-      const data = { contentUrl, adUrl, imageData };
-      const json = JSON.stringify(data);
-      const encoded = btoa(unescape(encodeURIComponent(json)));
-      const shortUrl = location.origin + location.pathname + "#" + encoded;
+    try {
+      // Base64 ডিকোড
+      const padded = code + "===".slice(0, (4 - code.length % 4) % 4);
+      const json = decodeURIComponent(escape(atob(padded)));
+      const data = JSON.parse(json);
 
-      document.getElementById('shortLink').value = shortUrl;
-      document.getElementById('result').classList.remove('hidden');
-    }
+      document.getElementById('main').innerHTML = `
+        ${data.i ? `<img src="${data.i}" class="preview-img">` : ''}
+        <div class="option-box"><h3>Option 1</h3>
+          <div class="btn-pair">
+            <button class="btn-left" onclick="ad()">Watch Now</button>
+            <button class="btn-right" onclick="ad()">Download</button>
+          </div>
+        </div>
+        <div class="option-box"><h3>Option 2</h3>
+          <div class="btn-pair">
+            <button class="btn-left alt" onclick="ad()">Continue</button>
+            <button class="btn-right alt" onclick="ad()">Get Link</button>
+          </div>
+        </div>
+        <div class="ad-space">Your Adsterra Banner Here</div>
+        <div class="note">এড দেখে ব্যাক করুন → Continue চাপুন</div>
+        <button onclick="next()" class="btn-continue">Continue to Get Link</button>
+      `;
 
-    function copyLink() {
-      const input = document.getElementById('shortLink');
-      input.select();
-      document.execCommand('copy');
-      alert('কপি হয়েছে!');
+      let clicked = false;
+      window.ad = () => window.open(data.a, "_blank");
+      window.next = () => {
+        if (!clicked) { ad(); clicked = true; }
+        else { location.href = "r.html#" + code; }
+      };
+
+    } catch (e) {
+      document.body.innerHTML = "<h2 style='text-align:center;color:red;padding:100px;'>Invalid or Expired Link!</h2>";
     }
   </script>
+</body>
+</html>
 </body>
 </html>
