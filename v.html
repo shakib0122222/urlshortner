@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Video Link</title>
+  <title>Pixguard - Get Link</title>
   <link rel="stylesheet" href="style.css" />
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;700&display=swap" rel="stylesheet">
 </head>
@@ -28,34 +28,38 @@
     </div>
 
     <div class="ad-banner-300">
-      <!-- তোমার Adsterra 300x250 কোড এখানে -->
+      <!-- তোমার Adsterra কোড এখানে বসাও -->
       <script async src="https://www.highcpmgate.com/un43k6x7fz?key=25d15c3b45c1c64c0805a9a6e48ed3c9"></script>
     </div>
 
     <div class="note-box">
-      <h3>কিভাবে ভিডিও ডাউনলোড করবেন?</h3>
+      <h3>কিভাবে লিংক পাবেন?</h3>
       <ol>
         <li>যেকোনো বাটনে চাপ দিন</li>
         <li>এড দেখে ব্যাক করুন</li>
-        <li>নিচের বাটনে চাপ দিন</li>
-        <li>“Continue” বাটনে ক্লিক করুন।(আবার Back করে চাপুন।</li>
-        <li>৫–৮ সেকেন্ড অপেক্ষা করুন।</li>
-        <li>Get Link” আসলে ক্লিক দিন।
-আবার Back করে Get Link চাপুন।</li>
+        <li>নিচের Continue বাটনে চাপ দিন</li>
       </ol>
     </div>
 
     <button id="continueBtn" class="btn-continue">Continue to Get Link</button>
   </div>
 
-  <script>
-    const params = new URLSearchParams(location.search);
-    const id = params.get('id');
-    if (!id) { document.body.innerHTML = "<h1 style='color:red;text-align:center;margin-top:100px;'>Invalid Link!</h1>"; }
+  <footer class="footer">
+    &copy; Pixguard ♥ Dev- SAKIB HOSSAIN
+  </footer>
 
-    const data = localStorage.getItem('link_' + id);
-    const link = data ? JSON.parse(data) : null;
-    if (!link) { document.body.innerHTML = "<h1 style='color:red;text-align:center;margin-top:100px;'>Link Expired!</h1>"; }
+  <script>
+    let rawData = location.hash.substring(1);
+    if (!rawData) {
+      document.body.innerHTML = "<h1 style='color:red;text-align:center;margin-top:100px;'>Invalid Link!</h1>";
+    }
+
+    try {
+      const jsonStr = decodeURIComponent(escape(atob(rawData)));
+      var link = JSON.parse(jsonStr);
+    } catch (e) {
+      document.body.innerHTML = "<h1 style='color:red;text-align:center;margin-top:100px;'>Link Error!</h1>";
+    }
 
     if (link?.imageData) {
       document.getElementById('previewImage').src = link.imageData;
@@ -63,7 +67,8 @@
     }
 
     window.adUrl = link?.adUrl;
-    window.linkId = id;
+    window.contentUrl = link?.contentUrl;
+    window.encodedData = rawData;
 
     let clickedOnce = false;
     document.getElementById('continueBtn').addEventListener('click', function() {
@@ -71,7 +76,7 @@
         if (window.adUrl) window.open(window.adUrl, '_blank');
         clickedOnce = true;
       } else {
-        location.href = 'redirect.html?id=' + window.linkId;
+        location.href = 'redirect.html#' + window.encodedData;
       }
     });
 
