@@ -17,8 +17,8 @@
     <div class="card form-card">
       <h2>শর্ট লিংক তৈরি করুন</h2>
       <div class="input-group">
-        <input type="url" id="contentUrl" placeholder="আপনার কনটেন্ট লিংক দিন" required />
-        <input type="url" id="adUrl" placeholder="এডস লিংক দিন (বাধ্যতামূলক)" required />
+        <input type="url" id="contentUrl" placeholder="কনটেন্ট লিংক (ডাউনলোড/ভিডিও)" required />
+        <input type="url" id="adUrl" placeholder="এডস লিংক (বাধ্যতামূলক)" required />
         <input type="file" id="imageUpload" accept="image/*" />
       </div>
       <button id="shortenBtn" class="btn-shorten">Create Short Link</button>
@@ -37,16 +37,16 @@
     </div>
   </main>
 
-  <footer>© 2025 Pixguard ♥ Dev- SAKIB HOSSAIN</footer>
+  <footer class="footer">
+    &copy; Pixguard ♥ Dev- SAKIB HOSSAIN
+  </footer>
 
   <script>
-    const shortenBtn = document.getElementById('shortenBtn');
-    const resultDiv = document.getElementById('result');
-    const shortLinkInput = document.getElementById('shortLink');
+    // টোটাল ভিজিট
     let visits = localStorage.getItem('totalVisits') || 0;
     document.getElementById('totalVisits').textContent = visits;
 
-    shortenBtn.addEventListener('click', () => {
+    document.getElementById('shortenBtn').addEventListener('click', () => {
       const contentUrl = document.getElementById('contentUrl').value.trim();
       const adUrl = document.getElementById('adUrl').value.trim();
       const fileInput = document.getElementById('imageUpload');
@@ -62,22 +62,25 @@
     });
 
     function generateLink(contentUrl, adUrl, imageData) {
-      const id = Math.random().toString(36).substr(2, 9);
-      localStorage.setItem('link_' + id, JSON.stringify({contentUrl, adUrl, imageData, created: Date.now()}));
-      
+      const data = { contentUrl, adUrl, imageData: imageData || "" };
+      const jsonStr = JSON.stringify(data);
+      const base64 = btoa(unescape(encodeURIComponent(jsonStr)));
+      const shortUrl = location.origin + location.pathname.replace('index.html', '') + 'v.html#' + base64;
+
+      document.getElementById('shortLink').value = shortUrl;
+      document.getElementById('result').classList.remove('hidden');
+
+      // ভিজিট কাউন্ট
       visits = parseInt(visits) + 1;
       localStorage.setItem('totalVisits', visits);
       document.getElementById('totalVisits').textContent = visits;
-
-      const shortUrl = location.origin + location.pathname.replace('index.html', '') + 'v.html?id=' + id;
-      shortLinkInput.value = shortUrl;
-      resultDiv.classList.remove('hidden');
     }
 
     function copyLink() {
-      shortLinkInput.select();
+      const input = document.getElementById('shortLink');
+      input.select();
       document.execCommand('copy');
-      alert('কপি হয়েছে!');
+      alert('লিংক কপি হয়েছে!');
     }
   </script>
 </body>
