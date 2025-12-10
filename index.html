@@ -5,9 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Pixguard - URL Shortener</title>
   <link rel="stylesheet" href="style.css">
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;700&display=swap" rel="stylesheet">
-  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
 </head>
 <body>
   <div class="container">
@@ -18,90 +15,56 @@
 
     <div class="card">
       <h2>শর্ট লিংক তৈরি করুন</h2>
-      <input type="url" id="contentUrl" placeholder="কনটেন্ট লিংক (ডাউনলোড/ভিডিও)" required>
-      <input type="url" id="adUrl" placeholder="এডস লিংক (বাধ্যতামূলক)" required>
+      <input type="url" id="contentUrl" placeholder="কনটেন্ট লিংক" required>
+      <input type="url" id="adUrl" placeholder="এডস লিংক" required>
       <input type="file" id="imageUpload" accept="image/*">
-      <button id="createBtn" class="btn-create">Create Short Link</button>
+      <button onclick="createLink()" class="btn-create">Create Short Link</button>
     </div>
 
     <div id="result" class="card result hidden">
       <p>তোমার ছোট লিংক তৈরি হয়েছে!</p>
-      <div class="short-link-box">
-        <input type="text" id="shortLink" readonly>
-        <button onclick="copyLink()" class="btn-copy">কপি</button>
-      </div>
+      <input type="text" id="shortLink" readonly>
+      <button onclick="copyLink()" class="btn-copy">কপি করুন</button>
     </div>
-
-    <div id="error" class="error hidden"></div>
   </div>
 
-  <footer class="footer">
-    © Pixguard ♥ Dev- SAKIB HOSSAIN
-  </footer>
+  <footer class="footer">© Pixguard - Dev SAKIB HOSSAIN</footer>
 
   <script>
-    const firebaseConfig = {
-      apiKey: "AIzaSyDpv3NaTYjrmeoN19itDACcvEpMggd72H8",
-      authDomain: "url-c576f.firebaseapp.com",
-      projectId: "url-c576f",
-      storageBucket: "url-c576f.firebasestorage.app",
-      messagingSenderId: "681639648878",
-      appId: "1:681639648878:web:31d36b7e0c8031c806d07f",
-      measurementId: "G-HKS96B2T7T"
-    };
-
-    firebase.initializeApp(firebaseConfig);
-    const db = firebase.firestore();
-
-    function generateCode() {
-      return Math.random().toString(36).substring(2, 8);
-    }
-
-    document.getElementById('createBtn').onclick = async () => {
+    function createLink() {
       const contentUrl = document.getElementById('contentUrl').value.trim();
       const adUrl = document.getElementById('adUrl').value.trim();
       const file = document.getElementById('imageUpload').files[0];
 
-      if (!contentUrl || !adUrl) return alert("দুটি লিংকই দাও!");
-
-      document.getElementById('createBtn').textContent = "তৈরি হচ্ছে...";
-      document.getElementById('createBtn').disabled = true;
+      if (!contentUrl || !adUrl) return alert("দুটি লিংক দিতে হবে!");
 
       let imageData = "";
       if (file) {
         const reader = new FileReader();
-        reader.onload = () => { imageData = reader.result; saveLink(); };
+        reader.onload = () => {
+          imageData = reader.result;
+          generateShortLink(contentUrl, adUrl, imageData);
+        };
         reader.readAsDataURL(file);
-      } else saveLink();
-
-      async function saveLink() {
-        try {
-          let code;
-          do { code = generateCode(); }
-          while (await db.collection("links").doc(code).get().then(s => s.exists));
-
-          await db.collection("links").doc(code).set({
-            contentUrl, adUrl, imageData,
-            clicks: 0,
-            createdAt: firebase.firestore.FieldValue.serverTimestamp()
-          });
-
-          const shortUrl = location.origin + "/" + code;
-          document.getElementById('shortLink').value = shortUrl;
-          document.getElementById('result').classList.remove('hidden');
-        } catch (err) {
-          document.getElementById('error').textContent = "Error: " + err.message;
-          document.getElementById('error').classList.remove('hidden');
-        } finally {
-          document.getElementById('createBtn').textContent = "Create Short Link";
-          document.getElementById('createBtn').disabled = false;
-        }
+      } else {
+        generateShortLink(contentUrl, adUrl, "");
       }
-    };
+    }
+
+    function generateShortLink(contentUrl, adUrl, imageData) {
+      const data = { contentUrl, adUrl, imageData };
+      const json = JSON.stringify(data);
+      const encoded = btoa(unescape(encodeURIComponent(json)));
+      const shortUrl = location.origin + location.pathname + "#" + encoded;
+
+      document.getElementById('shortLink').value = shortUrl;
+      document.getElementById('result').classList.remove('hidden');
+    }
 
     function copyLink() {
-      const inp = document.getElementById('shortLink');
-      inp.select(); document.execCommand('copy');
+      const input = document.getElementById('shortLink');
+      input.select();
+      document.execCommand('copy');
       alert('কপি হয়েছে!');
     }
   </script>
