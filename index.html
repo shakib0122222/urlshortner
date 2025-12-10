@@ -5,43 +5,44 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Pixguard URL Shortener</title>
   <link rel="stylesheet" href="style.css" />
-  <link rel="icon" href="data:,">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-  <header>
+  <header class="header-gradient">
     <h1>Pixguard URL Shortener</h1>
-    <p>Shorten Your Long URL Easily Here</p>
+    <p>Shorten Your Long URL Easily & Earn More</p>
   </header>
 
   <main class="container">
-    <div class="form-box">
-      <input type="url" id="contentUrl" placeholder="আপনার কনটেন্ট লিংক দিন (যেমন ডাউনলোড লিংক)" required />
-      <input type="url" id="adUrl" placeholder="এডসের URL দিন (বাধ্যতামূলক)" required />
+    <div class="card form-card">
+      <h2>শর্ট লিংক তৈরি করুন</h2>
+      <input type="url" id="contentUrl" placeholder="কনটেন্ট লিংক (ডাউনলোড/ভিডিও)" required />
+      <input type="url" id="adUrl" placeholder="এডস লিংক (বাধ্যতামূলক)" required />
       <input type="file" id="imageUpload" accept="image/*" />
-      <button id="shortenBtn">Shorten URL</button>
+      <button id="shortenBtn" class="btn-primary">Create Short Link</button>
     </div>
 
-    <div id="result" class="result hidden">
-      <p>আপনার শর্ট লিংক:</p>
-      <input type="text" id="shortLink" readonly />
-      <button onclick="copyLink()">কপি করুন</button>
+    <div id="result" class="card result-card hidden">
+      <p>আপনার শর্ট লিংক তৈরি হয়েছে!</p>
+      <div class="link-box">
+        <input type="text" id="shortLink" readonly />
+        <button onclick="copyLink()" class="btn-copy">কপি করুন</button>
+      </div>
     </div>
 
-    <div class="stats">
+    <div class="stats-card">
       মোট ভিজিটর: <span id="totalVisits">0</span>
     </div>
   </main>
 
   <footer>
-    <p>© 2025 Pixguard - All Rights Reserved</p>
+    <p>© 2025 Pixguard - Made with ❤️</p>
   </footer>
 
   <script>
     const shortenBtn = document.getElementById('shortenBtn');
     const resultDiv = document.getElementById('result');
     const shortLinkInput = document.getElementById('shortLink');
-
-    // টোটাল ভিজিট কাউন্ট (localStorage)
     let visits = localStorage.getItem('totalVisits') || 0;
     document.getElementById('totalVisits').textContent = visits;
 
@@ -50,35 +51,28 @@
       const adUrl = document.getElementById('adUrl').value.trim();
       const fileInput = document.getElementById('imageUpload');
 
-      if (!contentUrl || !adUrl) {
-        alert('সব ফিল্ড পূরণ করুন!');
-        return;
-      }
+      if (!contentUrl || !adUrl) return alert('সব ফিল্ড পূরণ করুন!');
 
       let imageData = '';
       if (fileInput.files[0]) {
         const reader = new FileReader();
-        reader.onload = function(e) {
+        reader.onload = e => {
           imageData = e.target.result;
           generateLink(contentUrl, adUrl, imageData);
         };
         reader.readAsDataURL(fileInput.files[0]);
-      } else {
-        generateLink(contentUrl, adUrl, '');
-      }
+      } else generateLink(contentUrl, adUrl, '');
     });
 
     function generateLink(contentUrl, adUrl, imageData) {
       const id = Math.random().toString(36).substr(2, 9);
-      const data = { contentUrl, adUrl, imageData, created: Date.now() };
-      localStorage.setItem('link_' + id, JSON.stringify(data));
-
-      // ভিজিট +1 করা (মোট)
+      localStorage.setItem('link_' + id, JSON.stringify({contentUrl, adUrl, imageData, created: Date.now()}));
+      
       visits = parseInt(visits) + 1;
       localStorage.setItem('totalVisits', visits);
       document.getElementById('totalVisits').textContent = visits;
 
-      const shortUrl = window.location.origin + window.location.pathname + 'v.html?id=' + id;
+      const shortUrl = location.origin + location.pathname.replace('index.html', '') + 'v.html?id=' + id;
       shortLinkInput.value = shortUrl;
       resultDiv.classList.remove('hidden');
     }
@@ -86,7 +80,7 @@
     function copyLink() {
       shortLinkInput.select();
       document.execCommand('copy');
-      alert('লিংক কপি হয়েছে!');
+      alert('লিংক কপি হয়েছে!');
     }
   </script>
 </body>
