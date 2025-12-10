@@ -3,54 +3,58 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Pixguard - Viewing Link</title>
+  <title>Pixguard - Get Your Link</title>
   <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
   <div class="viewer-container">
     <img id="previewImage" src="" alt="Preview" class="preview-img hidden" />
 
-    <div class="button-group">
-      <button class="btn primary" onclick="goToAd()">Watch Now</button>
-      <button class="btn primary" onclick="goToAd()">Download</button>
+    <div class="option-box">
+      <h3>Option 1</h3>
+      <div class="button-group">
+        <button class="btn-option" onclick="goToAd()">Watch Now</button>
+        <button class="btn-option" onclick="goToAd()">Download Now</button>
+      </div>
     </div>
 
-    <div class="button-group secondary">
-      <button class="btn secondary-btn" onclick="goToAd()">Continue to Link</button>
-      <button class="btn secondary-btn" onclick="goToAd()">Get Download Link</button>
+    <div class="option-box">
+      <h3>Option 2</h3>
+      <div class="button-group">
+        <button class="btn-option alt" onclick="goToAd()">Continue to Link</button>
+        <button class="btn-option alt" onclick="goToAd()">Get Download Link</button>
+      </div>
     </div>
 
-    <!-- Adsterra বা অন্য ব্যানার এখানে বসবে -->
-    <div class="ad-banner">
-      <p>Advertisement (Adsterra / যেকোনো ব্যানার এখানে বসবে)</p>
-      <!-- তোমার Adsterra কোড এখানে পেস্ট করো -->
+    <!-- Adsterra Banner 300x250 -->
+    <div class="ad-banner-300">
+      <!-- তোমার Adsterra 300x250 কোড এখানে বসাবে -->
+      <script async src="https://www.example.com/adsterra.js"></script>
+      <ins class="adsbygoogle" data-ad-client="ca-pub-XXXXX" data-ad-slot="XXXXX"></ins>
+      <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
     </div>
 
-    <div class="note">
-      <h3>কিভাবে ভিডিও/ফাইল ডাউনলোড করবেন?</h3>
+    <div class="note-box">
+      <h3>কিভাবে ডাউনলোড করবেন?</h3>
       <ol>
-        <li>“Continue” বাটনে ক্লিক করুন।</li>
-        <li>এড এ রিডাইরেক্ট করলে Back করুন।</li>
-        <li>৫–৮ সেকেন্ড অপেক্ষা করুন।</li>
-        <li>“Get Link” আসলে ক্লিক দিন।</li>
-        <li>আবার Back করে Get Link চাপুন।</li>
+        <li>যেকোনো একটি বাটনে ক্লিক করুন</li>
+        <li>এড দেখে ব্যাক করুন</li>
+        <li>৫-৮ সেকেন্ড অপেক্ষা করুন</li>
+        <li>নিচের Continue বাটনে ক্লিক করুন</li>
       </ol>
-      <p><strong>নোট:</strong> ভুল পেজ এ নিলে ব্যাক করুন।</p>
+      <p><strong>নোট:</strong> ভুল পেজে গেলে Back করুন</p>
     </div>
 
-    <div class="final-btn">
-      <button class="btn big-btn" onclick="window.location.href='redirect.html?id=' + getId()">Click Here to Continue</button>
-    </div>
+    <button class="btn-continue" onclick="continueToRedirect()">
+      Continue to Get Link
+    </button>
   </div>
 
   <script>
-    const urlParams = new URLSearchParams(window.location.search);
-    const id = urlParams.get('id');
-    if (!id) {
-      document.body.innerHTML = '<h1 style="text-align:center;margin-top:50px;color:red;">Invalid Link!</h1>';
-    }
-
-    function getId() { return id; }
+    const params = new URLSearchParams(location.search);
+    const id = params.get('id');
+    if (!id) { document.body.innerHTML = "<h1 style='text-align:center;color:red;margin-top:100px;'>Invalid Link!</h1>"; }
 
     const data = localStorage.getItem('link_' + id);
     if (data) {
@@ -61,10 +65,19 @@
       }
       window.adUrl = link.adUrl;
       window.contentUrl = link.contentUrl;
+      window.linkId = id;
     }
 
     function goToAd() {
       if (window.adUrl) window.open(window.adUrl, '_blank');
+    }
+
+    function continueToRedirect() {
+      // প্রথমে এড দেখাতে বলা হচ্ছে
+      if (window.adUrl) window.open(window.adUrl, '_blank');
+      setTimeout(() => {
+        location.href = 'redirect.html?id=' + window.linkId;
+      }, 800);
     }
   </script>
 </body>
