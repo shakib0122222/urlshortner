@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Pixguard - Shorten URL</title>
+  <title>Pixguard - URL Shortener</title>
   <link rel="stylesheet" href="style.css" />
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;700&display=swap" rel="stylesheet">
   <!-- Firebase SDK -->
@@ -11,80 +11,77 @@
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
 </head>
 <body>
-  <header class="modern-header">
-    <div class="logo">Pixguard</div>
-    <p>Short Links • Big Earnings</p>
-  </header>
+  <div class="container">
+    <header class="header">
+      <h1>Pixguard</h1>
+      <p>Shorten Links • Earn More</p>
+    </header>
 
-  <main class="container">
-    <div class="card form-card">
+    <div class="card">
       <h2>শর্ট লিংক তৈরি করুন</h2>
-      <input type="url" id="contentUrl" placeholder="কনটেন্ট লিংক" required />
+      <input type="url" id="contentUrl" placeholder="কনটেন্ট লিংক (ডাউনলোড/ভিডিও)" required />
       <input type="url" id="adUrl" placeholder="এডস লিংক (বাধ্যতামূলক)" required />
       <input type="file" id="imageUpload" accept="image/*" />
-      <button id="shortenBtn" class="btn-shorten">Create Short Link</button>
+      <button id="createBtn" class="btn-create">Create Short Link</button>
     </div>
 
-    <div id="result" class="card result-card hidden">
-      <p>তোমার ছোট লিংক তৈরি হয়েছে!</p>
-      <div class="link-box">
+    <div id="result" class="card result hidden">
+      <h3>তোমার ছোট লিংক প্রস্তুত!</h3>
+      <div class="short-link-box">
         <input type="text" id="shortLink" readonly />
         <button onclick="copyLink()" class="btn-copy">কপি</button>
       </div>
-      <p class="click-count">ক্লিক: <span id="clicks">0</span></p>
+      <p class="clicks">ক্লিক: <span id="clickCount">0</span></p>
     </div>
-  </main>
+  </div>
 
-  <footer class="footer">
-    © Pixguard ♥ Dev- SAKIB HOSSAIN
-  </footer>
+  <footer class="footer">© Pixguard - Dev SAKIB HOSSAIN</footer>
 
   <script>
-    // তোমার Firebase কনফিগ এখানে বসাও (firebase console থেকে কপি করো)
     const firebaseConfig = {
-      apiKey: "AIzaSyxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
-      authDomain: "pixguard-xxxxx.firebaseapp.com",
-      projectId: "pixguard-xxxxx",
-      storageBucket: "pixguard-xxxxx.appspot.com",
-      messagingSenderId: "1234567890",
-      appId: "1:1234567890:web:xxxxxxxxxxxxxxxx"
+      apiKey: "AIzaSyDpv3NaTYjrmeoN19itDACcvEpMggd72H8",
+      authDomain: "url-c576f.firebaseapp.com",
+      projectId: "url-c576f",
+      storageBucket: "url-c576f.firebasestorage.app",
+      messagingSenderId: "681639648878",
+      appId: "1:681639648878:web:31d36b7e0c8031c806d07f",
+      measurementId: "G-HKS96B2T7T"
     };
 
     firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
 
-    // র‍্যান্ডম ছোট কোড জেনারেট
     function generateCode() {
-      return Math.random().toString(36).substring(2, 8);
+      return Math.random().toString(36).substr(2, 6).toUpperCase();
     }
 
-    document.getElementById('shortenBtn').onclick = async () => {
+    document.getElementById('createBtn').onclick = async () => {
       const contentUrl = document.getElementById('contentUrl').value.trim();
       const adUrl = document.getElementById('adUrl').value.trim();
-      const fileInput = document.getElementById('imageUpload');
+      const file = document.getElementById('imageUpload').files[0];
 
       if (!contentUrl || !adUrl) return alert("সব ফিল্ড পূরণ করো!");
 
       let imageData = "";
-      if (fileInput.files[0]) {
+      if (file) {
         const reader = new FileReader();
-        reader.onload = async e => {
-          imageData = e.target.result;
-          await saveLink(contentUrl, adUrl, imageData);
+        reader.onload = async () => {
+          imageData = reader.result;
+          await createShortLink(contentUrl, adUrl, imageData);
         };
-        reader.readAsDataURL(fileInput.files[0]);
+        reader.readAsDataURL(file);
       } else {
-        await saveLink(contentUrl, adUrl, "");
+        await createShortLink(contentUrl, adUrl, "");
       }
     };
 
-    async function saveLink(contentUrl, adUrl, imageData) {
+    async function createShortLink(contentUrl, adUrl, imageData) {
       let code;
       do {
         code = generateCode();
-      } while (await db.collection('links').doc(code).get().then(snap => snap.exists));
+      } while (await db.collection("links").doc(code).get().then(s => s.exists));
 
-      await db.collection('links').doc(code).set({
+      await db.collection("links").doc(code).set({
         contentUrl,
         adUrl,
         imageData,
@@ -92,7 +89,7 @@
         createdAt: firebase.firestore.FieldValue.serverTimestamp()
       });
 
-      const shortUrl = location.origin + '/' + code;
+      const shortUrl = location.origin + "/" + code;
       document.getElementById('shortLink').value = shortUrl;
       document.getElementById('result').classList.remove('hidden');
     }
