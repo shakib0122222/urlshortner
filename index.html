@@ -1,63 +1,93 @@
 <!DOCTYPE html>
 <html lang="bn">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Pixguard - Premium URL Shortener</title>
-  <link rel="stylesheet" href="style.css">
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Pixguard URL Shortener</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="icon" href="data:,">
 </head>
 <body>
+  <header>
+    <h1>Pixguard URL Shortener</h1>
+    <p>Shorten Your Long URL Easily Here</p>
+  </header>
 
-<header>
-  <h1>Pixguard</h1>
-  <p>Shorten URL & Earn Money Instantly</p>
-</header>
-
-<div class="container">
-  <div class="card">
-
-    <div class="input-group">
-      <i class="fas fa-link"></i>
-      <input type="url" id="contentUrl" placeholder="Content Link (Drive/Mega)" required>
+  <main class="container">
+    <div class="form-box">
+      <input type="url" id="contentUrl" placeholder="আপনার কনটেন্ট লিংক দিন (যেমন ডাউনলোড লিংক)" required />
+      <input type="url" id="adUrl" placeholder="এডসের URL দিন (বাধ্যতামূলক)" required />
+      <input type="file" id="imageUpload" accept="image/*" />
+      <button id="shortenBtn">Shorten URL</button>
     </div>
 
-    <div class="input-group">
-      <i class="fas fa-dollar-sign"></i>
-      <input type="url" id="adsUrl" placeholder="Your Ads Link" required>
+    <div id="result" class="result hidden">
+      <p>আপনার শর্ট লিংক:</p>
+      <input type="text" id="shortLink" readonly />
+      <button onclick="copyLink()">কপি করুন</button>
     </div>
 
-    <!-- মোবাইলে ১০০% কাজ করে এইটা -->
-    <div class="input-group">
-      <i class="fas fa-image"></i>
-      <label for="imageUpload" class="file-upload-label">
-        <div class="file-upload-box">
-          <i class="fas fa-cloud-upload-alt"></i>
-          <strong>Tap Here to Select Image</strong>
-          <span id="fileInfo">No image selected</span>
-        </div>
-      </label>
-      <input type="file" id="imageUpload" accept="image/*" required>
+    <div class="stats">
+      মোট ভিজিটর: <span id="totalVisits">0</span>
     </div>
+  </main>
 
-    <button id="generateBtn" class="btn">Generate Premium Link</button>
+  <footer>
+    <p>© 2025 Pixguard - All Rights Reserved</p>
+  </footer>
 
-    <div id="result" class="result">
-      <p>Your Short Link is Ready!</p>
-      <input type="text" id="shortLink" readonly>
-      <button onclick="copyLink()">Copy Link</button>
-    </div>
+  <script>
+    const shortenBtn = document.getElementById('shortenBtn');
+    const resultDiv = document.getElementById('result');
+    const shortLinkInput = document.getElementById('shortLink');
 
-  </div>
+    // টোটাল ভিজিট কাউন্ট (localStorage)
+    let visits = localStorage.getItem('totalVisits') || 0;
+    document.getElementById('totalVisits').textContent = visits;
 
-  <div class="stats">
-    Total Visitors: <span id="visitorCount">0</span>
-  </div>
-</div>
+    shortenBtn.addEventListener('click', () => {
+      const contentUrl = document.getElementById('contentUrl').value.trim();
+      const adUrl = document.getElementById('adUrl').value.trim();
+      const fileInput = document.getElementById('imageUpload');
 
-<footer>© 2025 Pixguard • Made with Love in Bangladesh</footer>
+      if (!contentUrl || !adUrl) {
+        alert('সব ফিল্ড পূরণ করুন!');
+        return;
+      }
 
-<script src="script.js"></script>
+      let imageData = '';
+      if (fileInput.files[0]) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          imageData = e.target.result;
+          generateLink(contentUrl, adUrl, imageData);
+        };
+        reader.readAsDataURL(fileInput.files[0]);
+      } else {
+        generateLink(contentUrl, adUrl, '');
+      }
+    });
+
+    function generateLink(contentUrl, adUrl, imageData) {
+      const id = Math.random().toString(36).substr(2, 9);
+      const data = { contentUrl, adUrl, imageData, created: Date.now() };
+      localStorage.setItem('link_' + id, JSON.stringify(data));
+
+      // ভিজিট +1 করা (মোট)
+      visits = parseInt(visits) + 1;
+      localStorage.setItem('totalVisits', visits);
+      document.getElementById('totalVisits').textContent = visits;
+
+      const shortUrl = window.location.origin + window.location.pathname + 'v.html?id=' + id;
+      shortLinkInput.value = shortUrl;
+      resultDiv.classList.remove('hidden');
+    }
+
+    function copyLink() {
+      shortLinkInput.select();
+      document.execCommand('copy');
+      alert('লিংক কপি হয়েছে!');
+    }
+  </script>
 </body>
 </html>
