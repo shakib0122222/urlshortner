@@ -7,12 +7,10 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div class="countdown-page">
-    <div class="countdown-card">
-      <h2>Your Link is Ready</h2>
-      <div class="circle-timer"><span id="timer">5</span></div>
-      <button id="getLinkBtn" class="btn-getlink" disabled>Get Link</button>
-    </div>
+  <div class="countdown">
+    <h2>Your Link is Ready!</h2>
+    <div class="timer">5</div>
+    <button id="getBtn" class="btn-get" disabled>Get Link</button>
   </div>
 
   <script>
@@ -20,8 +18,8 @@
     const data = JSON.parse(atob(raw));
 
     let time = 5;
-    const timer = document.getElementById('timer');
-    const btn = document.getElementById('getLinkBtn');
+    const timer = document.querySelector('.timer');
+    const btn = document.getElementById('getBtn');
     let clicked = false;
 
     const interval = setInterval(() => {
@@ -30,15 +28,16 @@
       if (time <= 0) {
         clearInterval(interval);
         btn.disabled = false;
-        btn.textContent = "Get Link";
+        btn.textContent = "Get Link Now";
         btn.classList.add('active');
       }
     }, 1000);
 
     btn.onclick = () => {
       if (!clicked) {
-        window.open(data.adUrl, '_blank');
+        window.open(data.adUrl, "_blank");
         clicked = true;
+        btn.textContent = "আবার চাপুন...";
       } else {
         location.href = data.contentUrl;
       }
