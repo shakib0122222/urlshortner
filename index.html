@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Pixguard</title>
+  <title>Pixguard - Premium URL Shortener</title>
   <link rel="stylesheet" href="style.css">
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 <body>
@@ -17,38 +17,40 @@
 
 <div class="container">
   <div class="card">
-    <div class="input-box">
-      <i class="fas fa-link"></i>
-      <input type="url" id="contentUrl" placeholder="Content Link" required>
-    </div>
-
-    <div class="input-box">
-      <i class="fas fa-dollar-sign"></i>
-      <input type="url" id="adsUrl" placeholder="Ads Link" required>
-    </div>
-
-    <div class="input-box">
-      <i class="fas fa-image"></i>
-      <div class="file-area" onclick="document.getElementById('imageUpload').click()">
-        <input type="file" id="imageUpload" accept="image/*" hidden>
-        Choose Preview Image
+    <div class="input-group">
+      <div class="input-group">
+        <i class="fas fa-link"></i>
+        <input type="url" id="contentUrl" placeholder="Content Link (Drive, Mega, etc)" required>
       </div>
-      <div class="file-name">No file chosen</div>
-    </div>
 
-    <button id="shortenBtn" class="btn">Generate Link</button>
+      <div class="input-group">
+        <i class="fas fa-dollar-sign"></i>
+        <input type="url" id="adsUrl" placeholder="Your Ads Link" required>
+      </div>
 
-    <div id="result" class="result" style="display:none">
-      <p>Short Link Ready!</p>
-      <input type="text" id="shortLink" readonly>
-      <button onclick="copyLink()">Copy Link</button>
+      <div class="input-group">
+        <i class="fas fa-image"></i>
+        <div class="file-box">
+          <input type="file" id="imageUpload" accept="image/*">
+          <strong>Click to Choose Preview Image</strong>
+          <p id="fileName">No file selected</p>
+        </div>
+      </div>
+
+      <button id="generateBtn" class="btn">Generate Short Link</button>
+
+      <div id="result" class="result">
+        <p>Your Premium Link Ready!</p>
+        <input type="text" id="shortLink" readonly>
+        <button onclick="copyLink()">Copy Link</button>
+      </div>
     </div>
   </div>
 
   <div class="stats">Visitors: <span id="visitorCount">0</span></div>
 </div>
 
-<footer>© 2025 Pixguard</footer>
+<footer>© 2025 Pixguard • Made with Love in Bangladesh</footer>
 
 <script src="script.js"></script>
 </body>
