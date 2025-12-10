@@ -56,10 +56,7 @@
       let imageData = '';
       if (fileInput.files[0]) {
         const reader = new FileReader();
-        reader.onload = e => {
-          imageData = e.target.result;
-          generateLink(contentUrl, adUrl, imageData);
-        };
+        reader.onload = e => { imageData = e.target.result; generateLink(contentUrl, adUrl, imageData); };
         reader.readAsDataURL(fileInput.files[0]);
       } else generateLink(contentUrl, adUrl, '');
     });
