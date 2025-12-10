@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Pixguard - URL Shortener</title>
   <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;700&display=swap" rel="stylesheet">
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
 </head>
@@ -17,14 +18,14 @@
 
     <div class="card">
       <h2>শর্ট লিংক তৈরি করুন</h2>
-      <input type="url" id="contentUrl" placeholder="কনটেন্ট লিংক" required>
-      <input type="url" id="adUrl" placeholder="এডস লিংক" required>
+      <input type="url" id="contentUrl" placeholder="কনটেন্ট লিংক (ডাউনলোড/ভিডিও)" required>
+      <input type="url" id="adUrl" placeholder="এডস লিংক (বাধ্যতামূলক)" required>
       <input type="file" id="imageUpload" accept="image/*">
-      <button id="createBtn" class="btn-create">Create Link</button>
+      <button id="createBtn" class="btn-create">Create Short Link</button>
     </div>
 
     <div id="result" class="card result hidden">
-      <p>তোমার লিংক তৈরি হয়েছে!</p>
+      <p>তোমার ছোট লিংক তৈরি হয়েছে!</p>
       <div class="short-link-box">
         <input type="text" id="shortLink" readonly>
         <button onclick="copyLink()" class="btn-copy">কপি</button>
@@ -33,6 +34,10 @@
 
     <div id="error" class="error hidden"></div>
   </div>
+
+  <footer class="footer">
+    © Pixguard ♥ Dev- SAKIB HOSSAIN
+  </footer>
 
   <script>
     const firebaseConfig = {
@@ -49,7 +54,7 @@
     const db = firebase.firestore();
 
     function generateCode() {
-      return Math.random().toString(36).substring(2, 8); // ছোট কোড, কোনো UpperCase নাই
+      return Math.random().toString(36).substring(2, 8);
     }
 
     document.getElementById('createBtn').onclick = async () => {
@@ -57,10 +62,7 @@
       const adUrl = document.getElementById('adUrl').value.trim();
       const file = document.getElementById('imageUpload').files[0];
 
-      if (!contentUrl || !adUrl) {
-        alert("দুটি লিংকই দিতে হবে!");
-        return;
-      }
+      if (!contentUrl || !adUrl) return alert("দুটি লিংকই দাও!");
 
       document.getElementById('createBtn').textContent = "তৈরি হচ্ছে...";
       document.getElementById('createBtn').disabled = true;
@@ -68,29 +70,18 @@
       let imageData = "";
       if (file) {
         const reader = new FileReader();
-        reader.onload = async () => {
-          imageData = reader.result;
-          await saveLink();
-        };
+        reader.onload = () => { imageData = reader.result; saveLink(); };
         reader.readAsDataURL(file);
-      } else {
-        await saveLink();
-      }
+      } else saveLink();
 
       async function saveLink() {
         try {
           let code;
-          let exists = true;
-          while (exists) {
-            code = generateCode();
-            const snap = await db.collection("links").doc(code).get();
-            exists = snap.exists;
-          }
+          do { code = generateCode(); }
+          while (await db.collection("links").doc(code).get().then(s => s.exists));
 
           await db.collection("links").doc(code).set({
-            contentUrl,
-            adUrl,
-            imageData,
+            contentUrl, adUrl, imageData,
             clicks: 0,
             createdAt: firebase.firestore.FieldValue.serverTimestamp()
           });
@@ -98,22 +89,19 @@
           const shortUrl = location.origin + "/" + code;
           document.getElementById('shortLink').value = shortUrl;
           document.getElementById('result').classList.remove('hidden');
-          document.getElementById('error').classList.add('hidden');
         } catch (err) {
-          console.error(err);
           document.getElementById('error').textContent = "Error: " + err.message;
           document.getElementById('error').classList.remove('hidden');
         } finally {
-          document.getElementById('createBtn').textContent = "Create Link";
+          document.getElementById('createBtn').textContent = "Create Short Link";
           document.getElementById('createBtn').disabled = false;
         }
       }
     };
 
     function copyLink() {
-      const input = document.getElementById('shortLink');
-      input.select();
-      document.execCommand('copy');
+      const inp = document.getElementById('shortLink');
+      inp.select(); document.execCommand('copy');
       alert('কপি হয়েছে!');
     }
   </script>
