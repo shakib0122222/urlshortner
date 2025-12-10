@@ -8,25 +8,27 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;700&display=swap" rel="stylesheet">
 </head>
 <body>
-  <header class="new-header">
+  <header class="modern-header">
     <div class="logo">Pixguard</div>
-    <p>Fast • Secure • Short Links</p>
+    <p>Shorten Links • Earn More</p>
   </header>
 
   <main class="container">
     <div class="card form-card">
       <h2>শর্ট লিংক তৈরি করুন</h2>
-      <input type="url" id="contentUrl" placeholder="কনটেন্ট লিংক দিন" required />
-      <input type="url" id="adUrl" placeholder="এডস লিংক (বাধ্যতামূলক)" required />
-      <input type="file" id="imageUpload" accept="image/*" />
-      <button id="shortenBtn" class="btn-primary">Create Short Link</button>
+      <div class="input-group">
+        <input type="url" id="contentUrl" placeholder="আপনার কনটেন্ট লিংক দিন" required />
+        <input type="url" id="adUrl" placeholder="এডস লিংক দিন (বাধ্যতামূলক)" required />
+        <input type="file" id="imageUpload" accept="image/*" />
+      </div>
+      <button id="shortenBtn" class="btn-shorten">Create Short Link</button>
     </div>
 
     <div id="result" class="card result-card hidden">
-      <p>তোমার শর্ট লিংক রেডি!</p>
-      <div class="modern-link-box">
+      <p>আপনার শর্ট লিংক তৈরি হয়েছে!</p>
+      <div class="link-box">
         <input type="text" id="shortLink" readonly />
-        <button onclick="copyLink()" class="copy-btn">কপি</button>
+        <button onclick="copyLink()" class="btn-copy">কপি</button>
       </div>
     </div>
 
@@ -35,7 +37,7 @@
     </div>
   </main>
 
-  <footer>© 2025 Pixguard❤️Dev-SAKIB HOSSAIN</footer>
+  <footer>© 2025 Pixguard</footer>
 
   <script>
     const shortenBtn = document.getElementById('shortenBtn');
