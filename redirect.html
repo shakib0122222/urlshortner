@@ -48,9 +48,7 @@
 
     btn.onclick = () => {
       if (link.adUrl) window.open(link.adUrl, '_blank');
-      setTimeout(() => {
-        location.href = link.contentUrl;
-      }, 800);
+      setTimeout(() => { location.href = link.contentUrl; }, 800);
     };
   </script>
 </body>
