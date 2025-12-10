@@ -3,56 +3,64 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Pixguard - Get Link</title>
+  <title>Video Link</title>
   <link rel="stylesheet" href="style.css" />
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
 </head>
 <body>
-  <div class="viewer-container" id="content">
+  <div class="container" id="app">
     <div class="loading">লোড হচ্ছে...</div>
   </div>
 
-  <footer class="footer">© Pixguard ♥ Dev- SAKIB HOSSAIN</footer>
+  <footer class="footer">© Pixguard - Dev SAKIB HOSSAIN</footer>
 
   <script>
-    const firebaseConfig = { /* উপরের মতো একই কনফিগ বসাও */ };
+    const firebaseConfig = {
+      apiKey: "AIzaSyDpv3NaTYjrmeoN19itDACcvEpMggd72H8",
+      authDomain: "url-c576f.firebaseapp.com",
+      projectId: "url-c576f",
+      storageBucket: "url-c576f.firebasestorage.app",
+      messagingSenderId: "681639648878",
+      appId: "1:681639648878:web:31d36b7e0c8031c806d07f",
+      measurementId: "G-HKS96B2T7T"
+    };
+
     firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
 
-    const path = location.pathname.substring(1);
-    if (!path) {
-      document.body.innerHTML = "<h1 style='color:red;text-align:center;padding:50px;'>Invalid Link!</h1>";
+    const code = location.pathname.slice(1);
+    if (!code) {
+      document.body.innerHTML = "<h1 style='text-align:center;color:red;padding:100px;'>Invalid Link!</h1>";
     }
 
-    db.collection('links').doc(path).get().then(async doc => {
+    db.collection("links").doc(code).get().then(async doc => {
       if (!doc.exists) {
-        document.body.innerHTML = "<h1 style='color:red;text-align:center;padding:50px;'>Link Not Found!</h1>";
+        document.body.innerHTML = "<h1 style='text-align:center;color:red;padding:100px;'>Link Not Found!</h1>";
         return;
       }
 
       const data = doc.data();
-      await db.collection('links').doc(path).update({ clicks: firebase.firestore.FieldValue.increment(1) });
+      await db.collection("links").doc(code).update({ clicks: firebase.firestore.FieldValue.increment(1) });
 
-      document.getElementById('content').innerHTML = `
+      document.getElementById('app').innerHTML = `
         ${data.imageData ? `<img src="${data.imageData}" class="preview-img" />` : ''}
-        <div class="option-box"><h3>Option 1</h3>
-          <div class="button-pair">
-            <button class="btn-mobile left" onclick="openAd()">Watch Now</button>
-            <button class="btn-mobile right" onclick="openAd()">Download</button>
+        <div class="option-box">
+          <h3>Option 1</h3>
+          <div class="btn-pair">
+            <button class="btn-left" onclick="openAd()">Watch Now</button>
+            <button class="btn-right" onclick="openAd()">Download</button>
           </div>
         </div>
-        <div class="option-box"><h3>Option 2</h3>
-          <div class="button-pair">
-            <button class="btn-mobile left alt" onclick="openAd()">Continue</button>
-            <button class="btn-mobile right alt" onclick="openAd()">Get Link</button>
+        <div class="option-box">
+          <h3>Option 2</h3>
+          <div class="btn-pair">
+            <button class="btn-left alt" onclick="openAd()">Continue</button>
+            <button class="btn-right alt" onclick="openAd()">Get Link</button>
           </div>
         </div>
-        <div class="ad-banner-300"></div>
-        <div class="note-box">
-          <h3>কিভাবে লিংক পাবেন?</h3>
-          <ol><li>যেকোনো বাটনে চাপ দিন</li><li>এড দেখে ব্যাক করুন</li><li>নিচে Continue চাপুন</li></ol>
-        </div>
+        <div class="ad-space"></div>
+        <div class="note">যেকোনো বাটনে চাপ দিয়ে এড দেখে ব্যাক করুন → তারপর Continue চাপুন</div>
         <button id="continueBtn" class="btn-continue">Continue to Get Link</button>
       `;
 
@@ -65,13 +73,13 @@
           openAd();
           clicked = true;
         } else {
-          location.href = 'redirect.html#' + btoa(JSON.stringify(data));
+          location.href = "redirect.html#" + btoa(JSON.stringify(data));
         }
       };
     });
 
     function openAd() {
-      if (window.adUrl) window.open(window.adUrl, '_blank');
+      if (window.adUrl) window.open(window.adUrl, "_blank");
     }
   </script>
 </body>
