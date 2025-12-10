@@ -11,44 +11,43 @@
   <div class="viewer-container">
     <img id="previewImage" src="" alt="Preview" class="preview-img hidden" />
 
+    <!-- Option 1 -->
     <div class="option-box">
       <h3>Option 1</h3>
-      <div class="button-group">
-        <button class="btn-option" onclick="goToAd()">Watch Now</button>
-        <button class="btn-option" onclick="goToAd()">Download Now</button>
+      <div class="button-pair">
+        <button class="btn-left" onclick="goToAd()">Watch Now</button>
+        <button class="btn-right" onclick="goToAd()">Download Now</button>
       </div>
     </div>
 
+    <!-- Option 2 -->
     <div class="option-box">
       <h3>Option 2</h3>
-      <div class="button-group">
-        <button class="btn-option alt" onclick="goToAd()">Continue to Link</button>
-        <button class="btn-option alt" onclick="goToAd()">Get Download Link</button>
+      <div class="button-pair">
+        <button class="btn-left alt" onclick="goToAd()">Continue to Link</button>
+        <button class="btn-right alt" onclick="goToAd()">Get Download Link</button>
       </div>
     </div>
 
     <!-- Adsterra Banner 300x250 -->
     <div class="ad-banner-300">
-      <!-- তোমার Adsterra 300x250 কোড এখানে বসাবে -->
-      <script async src="https://www.example.com/adsterra.js"></script>
-      <ins class="adsbygoogle" data-ad-client="ca-pub-XXXXX" data-ad-slot="XXXXX"></ins>
-      <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+      <!-- তোমার Adsterra 300x250 কোড এখানে বসাও -->
+      <script async src="https://www.highcpmgate.com/un43k6x7fz?key=25d15c3b45c1c64c0805a9a6e48ed3c9"></script>
     </div>
 
     <div class="note-box">
       <h3>কিভাবে ডাউনলোড করবেন?</h3>
       <ol>
-        <li>যেকোনো একটি বাটনে ক্লিক করুন</li>
-        <li>এড দেখে ব্যাক করুন</li>
-        <li>৫-৮ সেকেন্ড অপেক্ষা করুন</li>
-        <li>নিচের Continue বাটনে ক্লিক করুন</li>
+        <li>যেকোনো বাটনে ক্লিক করে এড দেখুন</li>
+        <li>এড থেকে ব্যাক করুন</li>
+        <li>নিচের <strong>Continue</strong> বাটনে আবার ক্লিক করুন</li>
+        <li>৫ সেকেন্ড অপেক্ষা → Get Link পাবেন</li>
       </ol>
-      <p><strong>নোট:</strong> ভুল পেজে গেলে Back করুন</p>
+      <p><strong>নোট:</strong> প্রথমবার শুধু এড দেখাবে। দ্বিতীয়বার চাপলে লিংক পাবেন।</p>
     </div>
 
-    <button class="btn-continue" onclick="continueToRedirect()">
-      Continue to Get Link
-    </button>
+    <button id="continueBtn" class="btn-continue">Continue to Get Link</button>
+    <p id="statusText" class="status-text hidden">এড দেখে ব্যাক করুন → আবার চাপ দিন</p>
   </div>
 
   <script>
@@ -57,27 +56,35 @@
     if (!id) { document.body.innerHTML = "<h1 style='text-align:center;color:red;margin-top:100px;'>Invalid Link!</h1>"; }
 
     const data = localStorage.getItem('link_' + id);
-    if (data) {
-      const link = JSON.parse(data);
-      if (link.imageData) {
-        document.getElementById('previewImage').src = link.imageData;
-        document.getElementById('previewImage').classList.remove('hidden');
-      }
-      window.adUrl = link.adUrl;
-      window.contentUrl = link.contentUrl;
-      window.linkId = id;
+    const link = data ? JSON.parse(data) : null;
+    if (!link) { document.body.innerHTML = "<h1 style='text-align:center;color:red;margin-top:100px;'>Link Expired!</h1>"; }
+
+    if (link && link.imageData) {
+      document.getElementById('previewImage').src = link.imageData;
+      document.getElementById('previewImage').classList.remove('hidden');
     }
+
+    window.adUrl = link?.adUrl;
+    window.linkId = id;
+
+    let hasClickedOnce = false;
+    const continueBtn = document.getElementById('continueBtn');
+    const statusText = document.getElementById('statusText');
+
+    continueBtn.addEventListener('click', function() {
+      if (!hasClickedOnce) {
+        if (window.adUrl) window.open(window.adUrl, '_blank');
+        hasClickedOnce = true;
+        this.textContent = "আবার চাপ দিন (এড দেখার পর)";
+        this.style.background = "#ff6b6b";
+        statusText.classList.remove('hidden');
+      } else {
+        location.href = 'redirect.html?id=' + window.linkId;
+      }
+    });
 
     function goToAd() {
       if (window.adUrl) window.open(window.adUrl, '_blank');
-    }
-
-    function continueToRedirect() {
-      // প্রথমে এড দেখাতে বলা হচ্ছে
-      if (window.adUrl) window.open(window.adUrl, '_blank');
-      setTimeout(() => {
-        location.href = 'redirect.html?id=' + window.linkId;
-      }, 800);
     }
   </script>
 </body>
