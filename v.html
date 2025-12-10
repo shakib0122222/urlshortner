@@ -5,82 +5,72 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Pixguard - Get Link</title>
   <link rel="stylesheet" href="style.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;700&display=swap" rel="stylesheet">
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
 </head>
 <body>
-  <div class="viewer-container">
-    <img id="previewImage" src="" alt="Preview" class="preview-img hidden" />
-
-    <div class="option-box">
-      <h3>Option 1</h3>
-      <div class="button-pair">
-        <button class="btn-mobile left" onclick="goToAd()">Watch Now</button>
-        <button class="btn-mobile right" onclick="goToAd()">Download Now</button>
-      </div>
-    </div>
-
-    <div class="option-box">
-      <h3>Option 2</h3>
-      <div class="button-pair">
-        <button class="btn-mobile left alt" onclick="goToAd()">Continue</button>
-        <button class="btn-mobile right alt" onclick="goToAd()">Get Link</button>
-      </div>
-    </div>
-
-    <div class="ad-banner-300">
-      <!-- তোমার Adsterra কোড এখানে বসাও -->
-      <script async src="https://www.highcpmgate.com/un43k6x7fz?key=25d15c3b45c1c64c0805a9a6e48ed3c9"></script>
-    </div>
-
-    <div class="note-box">
-      <h3>কিভাবে লিংক পাবেন?</h3>
-      <ol>
-        <li>যেকোনো বাটনে চাপ দিন</li>
-        <li>এড দেখে ব্যাক করুন</li>
-        <li>নিচের Continue বাটনে চাপ দিন</li>
-      </ol>
-    </div>
-
-    <button id="continueBtn" class="btn-continue">Continue to Get Link</button>
+  <div class="viewer-container" id="content">
+    <div class="loading">লোড হচ্ছে...</div>
   </div>
 
-  <footer class="footer">
-    &copy; Pixguard ♥ Dev- SAKIB HOSSAIN
-  </footer>
+  <footer class="footer">© Pixguard ♥ Dev- SAKIB HOSSAIN</footer>
 
   <script>
-    let rawData = location.hash.substring(1);
-    if (!rawData) {
-      document.body.innerHTML = "<h1 style='color:red;text-align:center;margin-top:100px;'>Invalid Link!</h1>";
+    const firebaseConfig = { /* উপরের মতো একই কনফিগ বসাও */ };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+
+    const path = location.pathname.substring(1);
+    if (!path) {
+      document.body.innerHTML = "<h1 style='color:red;text-align:center;padding:50px;'>Invalid Link!</h1>";
     }
 
-    try {
-      const jsonStr = decodeURIComponent(escape(atob(rawData)));
-      var link = JSON.parse(jsonStr);
-    } catch (e) {
-      document.body.innerHTML = "<h1 style='color:red;text-align:center;margin-top:100px;'>Link Error!</h1>";
-    }
-
-    if (link?.imageData) {
-      document.getElementById('previewImage').src = link.imageData;
-      document.getElementById('previewImage').classList.remove('hidden');
-    }
-
-    window.adUrl = link?.adUrl;
-    window.contentUrl = link?.contentUrl;
-    window.encodedData = rawData;
-
-    let clickedOnce = false;
-    document.getElementById('continueBtn').addEventListener('click', function() {
-      if (!clickedOnce) {
-        if (window.adUrl) window.open(window.adUrl, '_blank');
-        clickedOnce = true;
-      } else {
-        location.href = 'redirect.html#' + window.encodedData;
+    db.collection('links').doc(path).get().then(async doc => {
+      if (!doc.exists) {
+        document.body.innerHTML = "<h1 style='color:red;text-align:center;padding:50px;'>Link Not Found!</h1>";
+        return;
       }
+
+      const data = doc.data();
+      await db.collection('links').doc(path).update({ clicks: firebase.firestore.FieldValue.increment(1) });
+
+      document.getElementById('content').innerHTML = `
+        ${data.imageData ? `<img src="${data.imageData}" class="preview-img" />` : ''}
+        <div class="option-box"><h3>Option 1</h3>
+          <div class="button-pair">
+            <button class="btn-mobile left" onclick="openAd()">Watch Now</button>
+            <button class="btn-mobile right" onclick="openAd()">Download</button>
+          </div>
+        </div>
+        <div class="option-box"><h3>Option 2</h3>
+          <div class="button-pair">
+            <button class="btn-mobile left alt" onclick="openAd()">Continue</button>
+            <button class="btn-mobile right alt" onclick="openAd()">Get Link</button>
+          </div>
+        </div>
+        <div class="ad-banner-300"></div>
+        <div class="note-box">
+          <h3>কিভাবে লিংক পাবেন?</h3>
+          <ol><li>যেকোনো বাটনে চাপ দিন</li><li>এড দেখে ব্যাক করুন</li><li>নিচে Continue চাপুন</li></ol>
+        </div>
+        <button id="continueBtn" class="btn-continue">Continue to Get Link</button>
+      `;
+
+      window.adUrl = data.adUrl;
+      window.contentUrl = data.contentUrl;
+
+      let clicked = false;
+      document.getElementById('continueBtn').onclick = () => {
+        if (!clicked) {
+          openAd();
+          clicked = true;
+        } else {
+          location.href = 'redirect.html#' + btoa(JSON.stringify(data));
+        }
+      };
     });
 
-    function goToAd() {
+    function openAd() {
       if (window.adUrl) window.open(window.adUrl, '_blank');
     }
   </script>
