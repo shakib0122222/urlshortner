@@ -1,57 +1,95 @@
-* { margin: 0; padding: 0; box-sizing: border-box; }
-body { font-family: 'Poppins', sans-serif; background: #f0f2f5; color: #333; line-height: 1.6; }
-header.header-gradient { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 40px 20px; text-align: center; color: white; }
-header h1 { font-size: 2.8rem; font-weight: 700; }
-header p { font-size: 1.3rem; opacity: 0.9; }
+/* নতুন হেডার – ছোট ও সুন্দর */
+.new-header {
+  background: linear-gradient(135deg, #ff6b6b, #ffa502);
+  padding: 20px 15px;
+  text-align: center;
+  color: white;
+}
+.new-header .logo {
+  font-size: 2.2rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+.new-header p {
+  font-size: 1rem;
+  opacity: 0.9;
+  margin-top: 5px;
+}
 
-.container { max-width: 900px; margin: 30px auto; padding: 20px; }
-.card { background: white; border-radius: 18px; padding: 25px; margin-bottom: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
-.form-card h2 { text-align: center; margin-bottom: 20px; color: #667eea; }
-input[type="url"], input[type="file"] { width: 100%; padding: 14px; margin: 12px 0; border: 2px solid #e0e0e0; border-radius: 12px; font-size: 1rem; }
-.btn-primary { width: 100%; padding: 16px; background: #667eea; color: white; border: none; border-radius: 12px; font-size: 1.2rem; cursor: pointer; transition: 0.3s; }
-.btn-primary:hover { background: #5a6fd8; transform: translateY(-2px); }
+/* মডার্ন লিংক বক্স */
+.modern-link-box {
+  display: flex;
+  margin-top: 15px;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+.modern-link-box input {
+  flex: 1;
+  padding: 14px;
+  border: none;
+  font-size: 1rem;
+  background: #f8f9fa;
+}
+.copy-btn {
+  padding: 0 20px;
+  background: #667eea;
+  color: white;
+  border: none;
+  font-weight: bold;
+}
 
-.result-card { text-align: center; }
-.link-box { display: flex; gap: 10px; margin-top: 15px; }
-.link-box input { flex: 1; padding: 12px; border: 2px solid #ddd; border-radius: 10px; }
-.btn-copy { padding: 12px 20px; background: #4ecdc4; color: white; border: none; border-radius: 10px; }
+/* v.html – বাম+ডান বাটন (মোবাইলে ফুল ওয়াইড) */
+.button-row {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  margin: 15px 0;
+  flex-wrap: wrap;
+}
+.btn-side {
+  flex: 1;
+  min-width: 140px;
+  padding: 16px 20px;
+  border: none;
+  border-radius: 50px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: white;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+.left-btn { background: #667eea; }
+.right-btn { background: #4ecdc4; }
+.left-btn.alt { background: #ff6b6b; }
+.right-btn.alt { background: #ffa502; }
+.btn-side:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+}
 
-.stats-card { text-align: center; font-size: 1.5rem; font-weight: 600; color: #667eea; background: white; padding: 20px; border-radius: 15px; box-shadow: 0 8px 25px rgba(102,126,234,0.15); }
+/* Continue বাটন – ফুল ওয়াইড */
+.btn-full {
+  width: 92%;
+  max-width: 500px;
+  margin: 25px auto;
+  display: block;
+  padding: 18px;
+  background: #1dd1a1;
+  color: white;
+  border: none;
+  border-radius: 50px;
+  font-size: 1.4rem;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 10px 30px rgba(29,209,161,0.3);
+  transition: 0.3s;
+}
+.btn-full:hover { background: #10ac84; transform: scale(1.03); }
 
-.preview-img { max-width: 100%; border-radius: 16px; margin: 20px 0; box-shadow: 0 15px 35px rgba(0,0,0,0.2); }
-.option-box { background: white; border-radius: 16px; padding: 20px; margin: 20px 0; box-shadow: 0 8px 25px rgba(0,0,0,0.1); }
-.option-box h3 { text-align: center; margin-bottom: 15px; color: #444; font-size: 1.4rem; }
-
-/* বাম + ডান বাটন */
-.button-pair { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; margin: 15px 0; }
-.btn-left, .btn-right { padding: 14px 28px; border: none; border-radius: 50px; font-size: 1.1rem; font-weight: 600; cursor: pointer; transition: all 0.3s; min-width: 150px; }
-.btn-left { background: #667eea; color: white; }
-.btn-right { background: #4ecdc4; color: white; }
-.btn-left.alt { background: #ff6b6b; }
-.btn-right.alt { background: #ffa502; color: white; }
-.btn-left:hover, .btn-right:hover { transform: translateY(-4px); box-shadow: 0 10px 25px rgba(0,0,0,0.2); }
-
-.ad-banner-300 { margin: 30px auto; text-align: center; max-width: 300px; min-height: 250px; background: #f9f9f9; border: 2px dashed #ccc; border-radius: 12px; padding: 10px; }
-
-.note-box { background: #fffacd; padding: 20px; border-radius: 14px; margin: 25px 0; border-left: 5px solid #ff6b6b; }
-.note-box ol { margin-left: 20px; }
-
-.btn-continue { width: 90%; max-width: 500px; margin: 30px auto; display: block; padding: 18px; background: #4ecdc4; color: white; border: none; border-radius: 50px; font-size: 1.4rem; cursor: pointer; box-shadow: 0 10px 30px rgba(78,205,196,0.4); transition: all 0.3s; }
-.btn-continue:hover { background: #45b7b0; transform: scale(1.05); }
-
-.status-text { text-align: center; color: #d63031; font-weight: bold; margin-top: 10px; font-size: 1.1rem; }
-
-.countdown-page { min-height: 100vh; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #667eea, #764ba2); }
-.countdown-card { background: white; padding: 50px 30px; border-radius: 24px; text-align: center; box-shadow: 0 20px 50px rgba(0,0,0,0.3); max-width: 400px; width: 90%; }
-.circle-timer { width: 150px; height: 150px; margin: 30px auto; background: #667eea; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 4rem; font-weight: bold; }
-.btn-getlink { padding: 16px 40px; background: #ddd; color: #999; border: none; border-radius: 50px; font-size: 1.3rem; cursor: not-allowed; }
-.btn-getlink.active { background: #4ecdc4; color: white; cursor: pointer; animation: pulse 2s infinite; }
-@keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
-
-footer { text-align: center; padding: 30px; background: #333; color: white; font-size: 0.9rem; }
-.hidden { display: none; }
-
+/* মোবাইল অপটিমাইজেশন */
 @media (max-width: 480px) {
-  .button-pair { flex-direction: column; align-items: center; }
-  .btn-left, .btn-right { width: 90%; }
+  .button-row { flex-direction: column; padding: 0 10px; }
+  .btn-side { width: 100%; margin: 8px 0; }
+  .new-header .logo { font-size: 1.9rem; }
 }
