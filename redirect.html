@@ -5,16 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Get Link - Pixguard</title>
   <link rel="stylesheet" href="style.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;700&display=swap" rel="stylesheet">
 </head>
 <body>
   <div class="countdown-page">
     <div class="countdown-card">
-      <h2>Your Link is Almost Ready...</h2>
-      <div class="circle-timer">
-        <span id="timer">5</span>
-      </div>
-      <p>Please wait <span id="timer2">5</span> seconds</p>
+      <h2>Your Link is Ready</h2>
+      <div class="circle-timer"><span id="timer">5</span></div>
       <button id="getLinkBtn" class="btn-getlink" disabled>Get Link</button>
     </div>
   </div>
@@ -26,29 +23,33 @@
     const link = data ? JSON.parse(data) : null;
 
     if (!link) {
-      document.body.innerHTML = "<h1 style='text-align:center;color:red;margin-top:100px;'>Link Expired!</h1>";
+      document.body.innerHTML = "<h1 style='color:red;text-align:center;margin-top:100px;'>Link Expired!</h1>";
     }
 
     let time = 5;
     const timerEl = document.getElementById('timer');
-    const timerEl2 = document.getElementById('timer2');
     const btn = document.getElementById('getLinkBtn');
+    let clickedOnce = false;
 
     const interval = setInterval(() => {
       time--;
       timerEl.textContent = time;
-      timerEl2.textContent = time;
       if (time <= 0) {
         clearInterval(interval);
         btn.disabled = false;
-        btn.textContent = 'Get Link Now';
+        btn.textContent = 'Get Link';
         btn.classList.add('active');
       }
     }, 1000);
 
     btn.onclick = () => {
-      if (link.adUrl) window.open(link.adUrl, '_blank');
-      setTimeout(() => { location.href = link.contentUrl; }, 800);
+      if (!clickedOnce) {
+        if (link.adUrl) window.open(link.adUrl, '_blank');
+        clickedOnce = true;
+        btn.textContent = 'আবার চাপুন...';
+      } else {
+        location.href = link.contentUrl;
+      }
     };
   </script>
 </body>
