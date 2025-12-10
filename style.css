@@ -1,56 +1,45 @@
-/* নতুন হেডার – ছোট ও সুন্দর */
-.new-header {
-  background: linear-gradient(135deg, #ff6b6b, #ffa502);
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: 'Poppins', sans-serif; background: #f8f9ff; color: #333; }
+
+.modern-header {
+  background: linear-gradient(135deg, #6e8efb, #a777e3);
   padding: 20px 15px;
   text-align: center;
   color: white;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
 }
-.new-header .logo {
-  font-size: 2.2rem;
-  font-weight: 700;
-  letter-spacing: 1px;
-}
-.new-header p {
-  font-size: 1rem;
-  opacity: 0.9;
-  margin-top: 5px;
-}
+.logo { font-size: 2.2rem; font-weight: 700; letter-spacing: 1px; }
+.modern-header p { font-size: 1rem; opacity: 0.9; margin-top: 5px; }
 
-/* মডার্ন লিংক বক্স */
-.modern-link-box {
-  display: flex;
-  margin-top: 15px;
-  border-radius: 12px;
-  overflow: hidden;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-}
-.modern-link-box input {
-  flex: 1;
-  padding: 14px;
-  border: none;
-  font-size: 1rem;
-  background: #f8f9fa;
-}
-.copy-btn {
-  padding: 0 20px;
-  background: #667eea;
-  color: white;
-  border: none;
-  font-weight: bold;
-}
+.container { max-width: 900px; margin: 20px auto; padding: 15px; }
+.card { background: white; border-radius: 18px; padding: 25px; margin-bottom: 20px; box-shadow: 0 8px 25px rgba(0,0,0,0.08); }
+.form-card h2 { text-align: center; color: #6e8efb; margin-bottom: 20px; font-size: 1.5rem; }
+.input-group input { width: 100%; padding: 14px; margin: 10px 0; border: 2px solid #e0e0e0; border-radius: 12px; font-size: 1rem; }
+.btn-shorten { width: 100%; padding: 16px; background: #6e8efb; color: white; border: none; border-radius: 12px; font-size: 1.2rem; font-weight: 600; cursor: pointer; }
+.btn-shorten:hover { background: #5a78e0; }
 
-/* v.html – বাম+ডান বাটন (মোবাইলে ফুল ওয়াইড) */
-.button-row {
+.link-box { display: flex; gap: 10px; margin-top: 15px; }
+.link-box input { flex: 1; padding: 12px; border: 2px solid #ddd; border-radius: 12px; }
+.btn-copy { padding: 12px 20px; background: #10b981; color: white; border: none; border-radius: 12px; font-weight: 600; }
+
+.stats-card { text-align: center; padding: 18px; background: linear-gradient(135deg, #667eea, #764ba2); color: white; border-radius: 16px; font-size: 1.4rem; font-weight: 600; }
+
+.preview-img { max-width: 100%; border-radius: 16px; margin: 20px 0; box-shadow: 0 10px 30px rgba(0,0,0,0.15); }
+
+.option-box { background: white; border-radius: 16px; padding: 18px; margin: 18px 0; box-shadow: 0 6px 20px rgba(0,0,0,0.08); }
+.option-box h3 { text-align: center; margin-bottom: 15px; color: #444; font-size: 1.3rem; }
+
+.button-pair {
   display: flex;
-  gap: 12px;
   justify-content: center;
-  margin: 15px 0;
+  gap: 12px;
   flex-wrap: wrap;
+  margin: 10px 0;
 }
-.btn-side {
+.btn-mobile {
   flex: 1;
   min-width: 140px;
-  padding: 16px 20px;
+  padding: 14px 20px;
   border: none;
   border-radius: 50px;
   font-size: 1.1rem;
@@ -59,37 +48,40 @@
   cursor: pointer;
   transition: all 0.3s;
 }
-.left-btn { background: #667eea; }
-.right-btn { background: #4ecdc4; }
-.left-btn.alt { background: #ff6b6b; }
-.right-btn.alt { background: #ffa502; }
-.btn-side:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-}
+.btn-mobile.left { background: #667eea; }
+.btn-mobile.right { background: #4ecdc4; }
+.btn-mobile.left.alt { background: #ff6b6b; }
+.btn-mobile.right.alt { background: #ffa502; }
+.btn-mobile:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(0,0,0,0.2); }
 
-/* Continue বাটন – ফুল ওয়াইড */
-.btn-full {
-  width: 92%;
-  max-width: 500px;
-  margin: 25px auto;
+.ad-banner-300 { margin: 25px auto; text-align: center; max-width: 320px; min-height: 260px; background: #f0f0f0; border-radius: 12px; padding: 10px; border: 2px dashed #ccc; }
+
+.note-box { background: #fff8e1; padding: 18px; border-radius: 14px; margin: 20px 0; border-left: 5px solid #ff9800; }
+.note-box ol { margin-left: 18px; line-height: 1.7; }
+
+.btn-continue {
   display: block;
+  width: 90%;
+  max-width: 500px;
+  margin: 30px auto;
   padding: 18px;
-  background: #1dd1a1;
+  background: #10b981;
   color: white;
   border: none;
   border-radius: 50px;
   font-size: 1.4rem;
-  font-weight: bold;
+  font-weight: 700;
   cursor: pointer;
-  box-shadow: 0 10px 30px rgba(29,209,161,0.3);
-  transition: 0.3s;
+  box-shadow: 0 10px 30px rgba(16,185,129,0.3);
 }
-.btn-full:hover { background: #10ac84; transform: scale(1.03); }
+.btn-continue:hover { background: #059669; transform: scale(1.03); }
 
-/* মোবাইল অপটিমাইজেশন */
-@media (max-width: 480px) {
-  .button-row { flex-direction: column; padding: 0 10px; }
-  .btn-side { width: 100%; margin: 8px 0; }
-  .new-header .logo { font-size: 1.9rem; }
-}
+.countdown-page { min-height: 100vh; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #667eea, #764ba2); }
+.countdown-card { background: white; padding: 50px 30px; border-radius: 24px; text-align: center; box-shadow: 0 20px 50px rgba(0,0,0,0.3); width: 90%; max-width: 400px; }
+.circle-timer { width: 130px; height: 130px; margin: 25px auto; background: #667eea; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 3.5rem; font-weight: bold; }
+.btn-getlink { padding: 16px 40px; background: #e0e0e0; color: #999; border: none; border-radius: 50px; font-size: 1.3rem; cursor: not-allowed; }
+.btn-getlink.active { background: #10b981; color: white; cursor: pointer; animation: pulse 1.5s infinite; }
+@keyframes pulse { 0%,100% { transform: scale(1); } 50% { transform: scale(1.05); } }
+
+footer { text-align: center; padding: 20px; background: #1a1a2e; color: #aaa; font-size: 0.9rem; }
+.hidden { display: none; }
