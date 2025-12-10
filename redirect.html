@@ -16,14 +16,21 @@
     </div>
   </div>
 
-  <script>
-    const params = new URLSearchParams(location.search);
-    const id = params.get('id');
-    const data = localStorage.getItem('link_' + id);
-    const link = data ? JSON.parse(data) : null;
+  <footer class="footer">
+    &copy; Pixguard ♥ Dev- SAKIB HOSSAIN
+  </footer>
 
-    if (!link) {
-      document.body.innerHTML = "<h1 style='color:red;text-align:center;margin-top:100px;'>Link Expired!</h1>";
+  <script>
+    let rawData = location.hash.substring(1);
+    if (!rawData) {
+      document.body.innerHTML = "<h1 style='color:red;text-align:center;margin-top:100px;'>Invalid Link!</h1>";
+    }
+
+    try {
+      const jsonStr = decodeURIComponent(escape(atob(rawData)));
+      var link = JSON.parse(jsonStr);
+    } catch (e) {
+      document.body.innerHTML = "<h1 style='color:red;text-align:center;margin-top:100px;'>Link Error!</h1>";
     }
 
     let time = 5;
