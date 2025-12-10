@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Video Link</title>
+  <title>Pixguard - Get Link</title>
   <link rel="stylesheet" href="style.css" />
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;700&display=swap" rel="stylesheet">
 </head>
@@ -11,64 +11,68 @@
   <div class="viewer-container">
     <img id="previewImage" src="" alt="Preview" class="preview-img hidden" />
 
-    <!-- Option 1 -->
     <div class="option-box">
       <h3>Option 1</h3>
-      <div class="button-row">
-        <button class="btn-side left-btn" onclick="goToAd()">Watch Now</button>
-        <button class="btn-side right-btn" onclick="goToAd()">Download Now</button>
+      <div class="button-pair">
+        <button class="btn-mobile left" onclick="goToAd()">Watch Now</button>
+        <button class="btn-mobile right" onclick="goToAd()">Download Now</button>
       </div>
     </div>
 
-    <!-- Option 2 -->
     <div class="option-box">
       <h3>Option 2</h3>
-      <div class="button-row">
-        <button class="btn-side left-btn alt" onclick="goToAd()">Continue</button>
-        <button class="btn-side right-btn alt" onclick="goToAd()">Get Link</button>
+      <div class="button-pair">
+        <button class="btn-mobile left alt" onclick="goToAd()">Continue</button>
+        <button class="btn-mobile right alt" onclick="goToAd()">Get Link</button>
       </div>
     </div>
 
-    <!-- Adsterra Banner -->
     <div class="ad-banner-300">
-      <!-- তোমার 300x250 এড কোড এখানে বসাও -->
+      <!-- তোমার Adsterra 300x250 কোড এখানে -->
       <script async src="https://www.highcpmgate.com/un43k6x7fz?key=25d15c3b45c1c64c0805a9a6e48ed3c9"></script>
     </div>
 
     <div class="note-box">
-      <h3>কিভাবে পাবেন?</h3>
-      <p>যেকোনো বাটনে চাপুন → এড দেখুন → ব্যাক করুন → <strong>আবার চাপ দিন</strong></p>
+      <h3>কিভাবে লিংক পাবেন?</h3>
+      <ol>
+        <li>যেকোনো বাটনে চাপ দিন</li>
+        <li>এড দেখে ব্যাক করুন</li>
+        <li>নিচের বাটনে চাপ দিন</li>
+      </ol>
     </div>
 
-    <!-- Continue বাটন – ২ বার চাপতে হবে -->
-    <button id="continueBtn" class="btn-full">Continue to Get Link</button>
+    <button id="continueBtn" class="btn-continue">Continue to Get Link</button>
   </div>
 
   <script>
     const params = new URLSearchParams(location.search);
     const id = params.get('id');
-    if (!id || !localStorage.getItem('link_' + id)) {
-      document.body.innerHTML = "<h1 style='text-align:center;color:red;margin-top:100px;'>Invalid Link!</h1>";
-    }
+    if (!id) { document.body.innerHTML = "<h1 style='color:red;text-align:center;margin-top:100px;'>Invalid Link!</h1>"; }
 
-    const link = JSON.parse(localStorage.getItem('link_' + id));
-    if (link.imageData) {
+    const data = localStorage.getItem('link_' + id);
+    const link = data ? JSON.parse(data) : null;
+    if (!link) { document.body.innerHTML = "<h1 style='color:red;text-align:center;margin-top:100px;'>Link Expired!</h1>"; }
+
+    if (link?.imageData) {
       document.getElementById('previewImage').src = link.imageData;
       document.getElementById('previewImage').classList.remove('hidden');
     }
 
-    let continueClicked = false;
-    document.getElementById('continueBtn').addEventListener('click', () => {
-      if (!continueClicked) {
-        window.open(link.adUrl, '_blank');
-        continueClicked = true;
+    window.adUrl = link?.adUrl;
+    window.linkId = id;
+
+    let clickedOnce = false;
+    document.getElementById('continueBtn').addEventListener('click', function() {
+      if (!clickedOnce) {
+        if (window.adUrl) window.open(window.adUrl, '_blank');
+        clickedOnce = true;
       } else {
-        location.href = 'redirect.html?id=' + id;
+        location.href = 'redirect.html?id=' + window.linkId;
       }
     });
 
     function goToAd() {
-      window.open(link.adUrl, '_blank');
+      if (window.adUrl) window.open(window.adUrl, '_blank');
     }
   </script>
 </body>
