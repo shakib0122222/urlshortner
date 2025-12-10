@@ -5,39 +5,37 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Pixguard URL Shortener</title>
   <link rel="stylesheet" href="style.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;700&display=swap" rel="stylesheet">
 </head>
 <body>
-  <header class="header-gradient">
-    <h1>Pixguard URL Shortener</h1>
-    <p>Shorten Your Long URL Easily & Earn More</p>
+  <header class="new-header">
+    <div class="logo">Pixguard</div>
+    <p>Fast • Secure • Short Links</p>
   </header>
 
   <main class="container">
     <div class="card form-card">
       <h2>শর্ট লিংক তৈরি করুন</h2>
-      <input type="url" id="contentUrl" placeholder="কনটেন্ট লিংক (ডাউনলোড/ভিডিও)" required />
+      <input type="url" id="contentUrl" placeholder="কনটেন্ট লিংক দিন" required />
       <input type="url" id="adUrl" placeholder="এডস লিংক (বাধ্যতামূলক)" required />
       <input type="file" id="imageUpload" accept="image/*" />
       <button id="shortenBtn" class="btn-primary">Create Short Link</button>
     </div>
 
     <div id="result" class="card result-card hidden">
-      <p>আপনার শর্ট লিংক তৈরি হয়েছে!</p>
-      <div class="link-box">
+      <p>তোমার শর্ট লিংক রেডি!</p>
+      <div class="modern-link-box">
         <input type="text" id="shortLink" readonly />
-        <button onclick="copyLink()" class="btn-copy">কপি করুন</button>
+        <button onclick="copyLink()" class="copy-btn">কপি</button>
       </div>
     </div>
 
     <div class="stats-card">
-      মোট ভিজিটর: <span id="totalVisits">0</span>
+      মোট ভিজিট: <span id="totalVisits">0</span>
     </div>
   </main>
 
-  <footer>
-    <p>© 2025 Pixguard - Made with ❤️</p>
-  </footer>
+  <footer>© 2025 Pixguard❤️Dev-SAKIB HOSSAIN</footer>
 
   <script>
     const shortenBtn = document.getElementById('shortenBtn');
@@ -77,7 +75,7 @@
     function copyLink() {
       shortLinkInput.select();
       document.execCommand('copy');
-      alert('লিংক কপি হয়েছে!');
+      alert('কপি হয়েছে!');
     }
   </script>
 </body>
